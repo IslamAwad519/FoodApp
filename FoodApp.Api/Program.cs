@@ -1,27 +1,34 @@
+using AutoMapper;
 using FoodApp.Api.Extensions;
+using ProjectManagementSystem.Helper;
 
-var builder = WebApplication.CreateBuilder(args);
+internal class Program
 {
-
-    builder.Services.AddApplicationService(builder.Configuration);
-   
-}
-
-var app = builder.Build();
-{
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+    private static void Main(string[] args)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddApplicationService(builder.Configuration);
+
+        var app = builder.Build();
+        {
+
+            MapperHandler.mapper = app.Services.GetService<IMapper>();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+        }
     }
-
-    app.UseHttpsRedirection();
-
-    app.UseAuthorization();
-
-    app.MapControllers();
-
-    app.Run();
 }

@@ -60,5 +60,10 @@ namespace FoodApp.Api.Repository.Repository
         {
             return await _dBContext.Set<T>().Where(x => !x.IsDeleted).CountAsync();
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _dBContext.SaveChangesAsync();
+        }
     }
 }

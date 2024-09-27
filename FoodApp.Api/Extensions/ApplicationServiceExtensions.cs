@@ -1,4 +1,6 @@
-﻿using FoodApp.Api.Repository.Interface;
+﻿using FluentValidation.AspNetCore;
+using FoodApp.Api.Helper;
+using FoodApp.Api.Repository.Interface;
 using FoodApp.Api.Repository.Repository;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.Data.Context;
@@ -10,7 +12,12 @@ namespace FoodApp.Api.Extensions
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(fv =>
+            {
+                fv.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -23,6 +30,8 @@ namespace FoodApp.Api.Extensions
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddAutoMapper(typeof(MappingProfiles));
 
 
             return services;
