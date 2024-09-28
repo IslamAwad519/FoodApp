@@ -1,6 +1,7 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Repository.Interface;
 using MediatR;
@@ -14,17 +15,11 @@ namespace FoodApp.Api.CQRS.Users.Commands
     string NewPassword) : IRequest<Result<bool>>;
 
 
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result<bool>>
+    public class ChangePasswordCommandHandler : BaseRequestHandler<ChangePasswordCommand, Result<bool>>
     {
-        private readonly IGenericRepository<User> _userRepo;
-        private readonly IMediator _mediator;
 
-        public ChangePasswordCommandHandler(IGenericRepository<User> userRepo, IMediator mediator)
-        {
-            _userRepo = userRepo;
-            _mediator = mediator;
-        }
-        public async Task<Result<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public ChangePasswordCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+        public override async Task<Result<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             var userResult = await _mediator.Send(new GetUserByEmailQuery(request.Email));
 
@@ -41,8 +36,12 @@ namespace FoodApp.Api.CQRS.Users.Commands
             }
 
             user.PasswordHash = PasswordHasher.HashPassword(request.NewPassword);
-            _userRepo.Update(user);
-            await _userRepo.SaveChangesAsync();
+
+            var userRepo = _unitOfWork.Repository<User>();
+
+            userRepo.Update(user);
+            await userRepo.SaveChangesAsync();
+
 
             return Result.Success(true);
         }

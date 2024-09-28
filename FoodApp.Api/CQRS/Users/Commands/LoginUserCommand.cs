@@ -1,5 +1,6 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Services;
 using MediatR;
@@ -8,19 +9,13 @@ using ProjectManagementSystem.Helper;
 namespace FoodApp.Api.CQRS.Users.Commands
 {
     public record LoginCommand(string Email, string Password) : IRequest<Result<LoginResponse>>;
-
     public record LoginResponse(int Id, string Email, string Token);
 
-    public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
+    public class LoginCommandHandler : BaseRequestHandler<LoginCommand, Result<LoginResponse>>
     {
-        private readonly IMediator _mediator;
+        public LoginCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
-        public LoginHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public override async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {

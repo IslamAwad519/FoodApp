@@ -1,7 +1,7 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.Data.Entities;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
-using FoodApp.Api.Repository.Interface;
 using MediatR;
 using ProjectManagementSystem.CQRS.Users.Queries;
 using ProjectManagementSystem.Helper;
@@ -15,19 +15,10 @@ namespace FoodApp.Api.CQRS.Users.Commands
      string PhoneNumber,
      string Password) : IRequest<Result>;
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result>
+    public class RegisterCommandHandler : BaseRequestHandler<RegisterCommand, Result>
     {
-        private readonly IGenericRepository<User> _genericRepo;
-        private readonly IMediator _mediator;
-
-        public RegisterCommandHandler(
-            IGenericRepository<User> genericRepo,
-            IMediator mediator)
-        {
-            _genericRepo = genericRepo;
-            _mediator = mediator;
-        }
-        public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public RegisterCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+        public override async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var userExists = await _mediator.Send(new CheckUserExistsQuery(request.UserName, request.Email));
 
@@ -40,8 +31,10 @@ namespace FoodApp.Api.CQRS.Users.Commands
 
             user.PasswordHash = PasswordHasher.HashPassword(request.Password);
 
-            await _genericRepo.AddAsync(user);
-            await _genericRepo.SaveChangesAsync();
+            var userRepo = _unitOfWork.Repository<User>();
+
+            await userRepo.AddAsync(user);
+            await userRepo.SaveChangesAsync();
 
             return Result.Success();
 

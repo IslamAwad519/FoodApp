@@ -40,8 +40,9 @@ namespace FoodApp.Api.Extensions
                 .EnableSensitiveDataLogging();
             });
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<UserStateService>();
 
             services.AddAutoMapper(typeof(MappingProfiles));

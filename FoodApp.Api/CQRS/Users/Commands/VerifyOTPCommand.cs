@@ -1,27 +1,23 @@
 ﻿using FoodApp.Api.Abstraction;
+using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
-using FoodApp.Api.Repository.Interface;
 using MediatR;
 
 namespace FoodApp.Api.CQRS.Users.Commands
 {
     public record VerifyOTPCommand(string Email, string OTP) : IRequest<Result<bool>>;
 
-    public class VerifyOTPCommandHandler : IRequestHandler<VerifyOTPCommand, Result<bool>>
+    public class VerifyOTPCommandHandler : BaseRequestHandler<VerifyOTPCommand, Result<bool>>
     {
-        IGenericRepository<User> _userRepository;
-        private readonly IMediator _mediator;
+        public VerifyOTPCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
-        public VerifyOTPCommandHandler(IGenericRepository<User> userRepository,IMediator mediator)
+        public override async Task<Result<bool>> Handle(VerifyOTPCommand request, CancellationToken cancellationToken)
         {
-            _userRepository = userRepository;
-            _mediator = mediator;
-        }
+            var userResult = await _mediator.Send(new GetUserByEmailQuery(request.Email));
 
-        public async Task<Result<bool>> Handle(VerifyOTPCommand request, CancellationToken cancellationToken)
-        {
-            var user = await _userRepository.FirstAsync(u => u.Email == request.Email);
+            var user = userResult.Data;
 
             if (user is null || (user.OTPExpiration is not null && user.OTPExpiration < DateTime.Now) || (user.VerificationOTP is not null && user.VerificationOTP != request.OTP))
             {
@@ -32,7 +28,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
             user.OTPExpiration = null;
             user.IsEmailVerified = true;
 
-            await _userRepository.SaveChangesAsync();
+            await _unitOfWork.Repository<User>().SaveChangesAsync();
 
             return Result.Success(true);
         }
