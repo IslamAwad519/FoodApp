@@ -8,11 +8,11 @@ namespace FoodApp.Api.Validators
         public RegisterViewModelValidator()
         {
             RuleFor(x => x.UserName)
-           .NotEmpty().WithMessage("UserName is required");
+                 .NotEmpty().WithMessage("UserName is required");
 
             RuleFor(x => x.Email)
-           .NotEmpty().WithMessage("Email is required")
-           .EmailAddress().WithMessage("A valid email is required");
+                .NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("A valid email is required");
 
             RuleFor(x => x.Country)
                 .NotEmpty().WithMessage("Country is required");

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FoodApp.Api.Migrations
+namespace FoodApp.Api.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class updateuserModel : Migration
+    public partial class AddedOTPEXpirationColumnInDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

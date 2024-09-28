@@ -1,7 +1,9 @@
 ﻿using FluentValidation.AspNetCore;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Helper;
 using FoodApp.Api.Repository.Interface;
 using FoodApp.Api.Repository.Repository;
+using FoodApp.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +22,7 @@ namespace FoodApp.Api.Extensions
             {
                 fv.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             });
+
             services.AddSwaggerServices();
             services.AddAuthConfig(configuration);
             services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
@@ -38,6 +41,8 @@ namespace FoodApp.Api.Extensions
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddScoped<UserStateService>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
 

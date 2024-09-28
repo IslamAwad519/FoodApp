@@ -9,11 +9,11 @@ using ProjectManagementSystem.Data.Context;
 
 #nullable disable
 
-namespace FoodApp.Api.Migrations
+namespace FoodApp.Api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240927235008_update-userModel")]
-    partial class updateuserModel
+    [Migration("20240928011630_AddedOTPEXpirationColumnInDataBase")]
+    partial class AddedOTPEXpirationColumnInDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
