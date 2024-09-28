@@ -10,6 +10,7 @@
         public string Country { get; set; }
         public DateTime DateCreated { get; set; }
         public string? VerificationOTP { get; set; }
+        public DateTime? OTPExpiration { get; set; }
         public string? PasswordResetCode { get; set; }
     }
 }

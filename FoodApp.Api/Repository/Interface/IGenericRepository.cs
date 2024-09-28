@@ -15,5 +15,9 @@ namespace FoodApp.Api.Repository.Interface
         void DeleteById(int id);
 
         Task<int> SaveChangesAsync();
+        IQueryable<T> GetAll();
+        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+        Task<T> FirstAsync(Expression<Func<T, bool>> predicate);
+
     }
 }
