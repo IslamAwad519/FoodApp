@@ -19,8 +19,8 @@ namespace FoodApp.Api.CQRS.Users.Commands
             if (user == null)
                 return Result.Failure<bool>(UserErrors.UserNotFound);
 
-            if (!user.IsEmailVerified)
-                return Result.Failure<bool>(UserErrors.UserNotVerified);
+            //if (!user.IsEmailVerified)
+            //    return Result.Failure<bool>(UserErrors.UserNotVerified);
 
 
             var resetCode = Guid.NewGuid().ToString();

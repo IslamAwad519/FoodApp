@@ -42,5 +42,23 @@ namespace FoodApp.Api.Controllers
             var response = await _mediator.Send(command);
             return response;
         }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<Result<bool>> ForgotPassword(ForgotPasswordViewModel viewModel)
+        {
+            var command = viewModel.Map<ForgotPasswordCommand>();
+
+            var response = await _mediator.Send(command);
+
+            return response;
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<Result<bool>> ResetPassword([FromQuery] string email, [FromQuery] string resetCode, string newPassword)
+        {
+            var response = await _mediator.Send(new ResetPasswordCommand(email, resetCode, newPassword));
+
+            return response;
+        }
     }
 }
