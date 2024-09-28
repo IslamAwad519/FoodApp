@@ -65,5 +65,18 @@ namespace FoodApp.Api.Repository.Repository
         {
             return await _dBContext.SaveChangesAsync();
         }
+        public IQueryable<T> GetAll()
+        {
+            IQueryable<T> query = _dBContext.Set<T>().Where(a => a.IsDeleted != true);
+            return query;
+        }
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate)
+        {
+            return GetAll().Where(predicate);
+        }
+        public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await GetAll(predicate).FirstOrDefaultAsync();
+        }
     }
 }
