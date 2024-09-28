@@ -29,9 +29,9 @@ namespace FoodApp.Api.CQRS.Users.Commands
 
             var resetUrl = $"https://localhost:7120/api/Account/reset-password?email={request.Email}&code={resetCode}";
 
-            var emailSent = await EmailSenderHelper.SendEmailAsync(request.Email, "Reset Your Password", $"Please reset your password by clicking the link: <a href='{resetUrl}'>Reset Password</a>");
+            await _emailSenderHelper.SendEmailAsync(request.Email, "Reset Your Password", $"Please reset your password by clicking the link: <a href='{resetUrl}'>Reset Password</a>");
 
-            return Result.Success(emailSent);
+            return Result.Success(true);
         }
     }
 }

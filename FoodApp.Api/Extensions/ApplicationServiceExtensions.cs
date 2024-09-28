@@ -43,7 +43,8 @@ namespace FoodApp.Api.Extensions
             //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<UserStateService>();
+            services.AddScoped<UserState>();
+            services.AddScoped<RequestParameters>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
 
