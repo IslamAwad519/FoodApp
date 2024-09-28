@@ -9,7 +9,7 @@ using ProjectManagementSystem.Helper;
 
 namespace FoodApp.Api.CQRS.Users.Commands
 {
-    public record ResetPasswordCommand(string Email, string ResetCode, string NewPassword) : IRequest<Result<bool>>;
+    public record ResetPasswordCommand(string Email, string OTP, string NewPassword, string ConfirmPassword) : IRequest<Result<bool>>;
 
     public class ResetPasswordCommandHandler : BaseRequestHandler<ResetPasswordCommand, Result<bool>>
     {
@@ -23,12 +23,26 @@ namespace FoodApp.Api.CQRS.Users.Commands
             if (user == null)
                 return Result.Failure<bool>(UserErrors.UserNotFound);
 
-            if (user.PasswordResetCode != request.ResetCode)
+            if (user.PasswordResetOTP != request.OTP)
                 return Result.Failure<bool>(UserErrors.InvalidResetCode);
+
+            if (user.PasswordResetOTPExpiration is not null && user.PasswordResetOTPExpiration < DateTime.Now)
+            {
+                return Result.Failure<bool>(UserErrors.OTPExpired);
+            }
+
+            if (user.PasswordResetOTP is not null && user.PasswordResetOTP != request.OTP)
+            {
+                return Result.Failure<bool>(UserErrors.InvalidResetCode);
+            }
+
+            if (request.NewPassword != request.ConfirmPassword)
+                return Result.Failure<bool>(UserErrors.PasswordsDoNotMatch);
 
             user.PasswordHash = PasswordHasher.HashPassword(request.NewPassword);
 
-            user.PasswordResetCode = null;
+            user.PasswordResetOTP = null;
+            user.PasswordResetOTPExpiration = null;
 
             _unitOfWork.Repository<User>().Update(user);
             await _unitOfWork.SaveChangesAsync();

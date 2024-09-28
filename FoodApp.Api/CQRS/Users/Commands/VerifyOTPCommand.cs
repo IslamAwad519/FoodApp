@@ -18,14 +18,18 @@ namespace FoodApp.Api.CQRS.Users.Commands
             var userResult = await _mediator.Send(new GetUserByEmailQuery(request.Email));
 
             var user = userResult.Data;
-
-            if (user is null || (user.OTPExpiration is not null && user.OTPExpiration < DateTime.Now) || (user.VerificationOTP is not null && user.VerificationOTP != request.OTP))
+            if (user.VerificationOTPExpiration is not null && user.VerificationOTPExpiration < DateTime.Now)
             {
-                return Result.Failure<bool>(UserErrors.UserNotFound);
+                return Result.Failure<bool>(UserErrors.OTPExpired);
+            }
+
+            if (user.VerificationOTP is not null && user.VerificationOTP != request.OTP)
+            {
+                return Result.Failure<bool>(UserErrors.InvalidOTP);
             }
 
             user.VerificationOTP = null;
-            user.OTPExpiration = null;
+            user.VerificationOTPExpiration = null;
             user.IsEmailVerified = true;
 
             await _unitOfWork.Repository<User>().SaveChangesAsync();
