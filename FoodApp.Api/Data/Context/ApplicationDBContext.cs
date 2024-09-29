@@ -20,5 +20,7 @@ namespace ProjectManagementSystem.Data.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Role> roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 }
