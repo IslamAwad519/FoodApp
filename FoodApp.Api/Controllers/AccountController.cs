@@ -42,9 +42,23 @@ namespace FoodApp.Api.Controllers
         {
             var refreshToken = CookieHelper.GetRefreshTokenCookie(Request);
             var result = await _mediator.Send(new RefreshTokenCommand(refreshToken));
+            if(!result.IsSuccess)
+                return Result.Failure<LoginResponse>(UserErrors.InvalidRefreshToken);
+            CookieHelper.SetRefreshTokenCookie(Response, result.Data.RefreshToken);
+
             return result;
 
         }
+
+        [HttpPost("RevokeToken")]
+        public async Task<Result<bool>> RevokeToken(string? token)
+        {
+            var result = await _mediator.Send(new RevokeTokenCommand(token ?? Request.Cookies["refreshToken"]));
+            if(string.IsNullOrEmpty(token))
+                return Result.Failure<bool>(UserErrors.TokenIsRequired);
+            return result;
+        }
+
         [HttpPost("ChangePassword")]
         public async Task<Result<bool>> ChangePassword(ChangePasswordViewModel viewModel)
         {
