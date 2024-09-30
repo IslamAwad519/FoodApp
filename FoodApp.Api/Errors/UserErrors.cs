@@ -46,6 +46,11 @@ namespace FoodApp.Api.Errors
 
         public static readonly Error InvalidRefreshToken =
               new("Invalid Refresh Token", StatusCodes.Status400BadRequest);
+
+
+        public static readonly Error TokenIsRequired =
+              new("Token Is Required", StatusCodes.Status400BadRequest);
+
     }
 
 }
