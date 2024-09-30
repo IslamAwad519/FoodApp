@@ -28,6 +28,13 @@ namespace FoodApp.Api.Repository.Repository
             return await query.ToListAsync();
         }
 
+        public  async Task<IQueryable<T>> GetAsyncToInclude(Expression<Func<T, bool>> expression)
+        {
+            var query = _dBContext.Set<T>().AsQueryable();
+            query = query.Where(x => !x.IsDeleted);
+            query = query.Where(expression);
+            return  query;
+        }
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _dBContext.Set<T>().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == id);

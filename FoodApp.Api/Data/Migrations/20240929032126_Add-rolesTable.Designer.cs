@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManagementSystem.Data.Context;
 
 #nullable disable
 
-namespace FoodApp.Api.Migrations
+namespace FoodApp.Api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240929032126_Add-rolesTable")]
+    partial class AddrolesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,19 +42,14 @@ namespace FoodApp.Api.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("RevokedOn")
+                    b.Property<DateTime>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -159,17 +157,6 @@ namespace FoodApp.Api.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("FoodApp.Api.Data.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("FoodApp.Api.Data.Entities.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FoodApp.Api.Data.Entities.UserRole", b =>
                 {
                     b.HasOne("FoodApp.Api.Data.Entities.Role", "Role")
@@ -191,8 +178,6 @@ namespace FoodApp.Api.Migrations
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

@@ -3,7 +3,6 @@ using FoodApp.Api.DTOs;
 using FoodApp.Api.Helper;
 using FoodApp.Api.Repository.Interface;
 using FoodApp.Api.Repository.Repository;
-using FoodApp.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,11 +39,11 @@ namespace FoodApp.Api.Extensions
                 .EnableSensitiveDataLogging();
             });
 
-            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+           
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<UserState>();
             services.AddScoped<RequestParameters>();
+            services.AddScoped<ControllerParameters>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
 
@@ -114,7 +113,8 @@ namespace FoodApp.Api.Extensions
                       ValidateIssuerSigningKey = true,
                       ValidIssuer = jwtSettings?.Issuer,
                       ValidAudience = jwtSettings?.Audience,
-                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key!))
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key!)),
+                      ClockSkew = TimeSpan.Zero
                   };
               });
 
