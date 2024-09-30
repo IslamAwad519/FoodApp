@@ -40,6 +40,12 @@ namespace FoodApp.Api.Errors
 
         public static readonly Error InvalidOTP =
             new("Invalid OTP", StatusCodes.Status400BadRequest);
+
+        public static readonly Error NoRefreshTokensFound =
+            new("No Refresh Tokens To This User Found", StatusCodes.Status400BadRequest);
+
+        public static readonly Error InvalidRefreshToken =
+              new("Invalid Refresh Token", StatusCodes.Status400BadRequest);
     }
 
 }

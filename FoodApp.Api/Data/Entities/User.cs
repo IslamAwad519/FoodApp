@@ -14,5 +14,7 @@
         public string? PasswordResetOTP { get; set; }
         public DateTime? PasswordResetOTPExpiration { get; set; }
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<RefreshToken>? RefreshTokens { get; set; } = new List<RefreshToken>();
+
     }
 }

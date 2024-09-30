@@ -1,12 +1,12 @@
 ﻿using FoodApp.Api.Data.Entities;
-using FoodApp.Api.Helper;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
 
-namespace FoodApp.Api.Services
+namespace FoodApp.Api.Helper
 {
     public static class TokenGenerator
     {
@@ -39,6 +39,22 @@ namespace FoodApp.Api.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public static RefreshToken GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+
+            using var generator = new RNGCryptoServiceProvider();
+
+            generator.GetBytes(randomNumber);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                ExpiresOn = DateTime.UtcNow.AddDays(10),
+                CreatedOn = DateTime.UtcNow
+            };
         }
     }
 }

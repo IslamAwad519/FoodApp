@@ -7,6 +7,7 @@ namespace FoodApp.Api.Repository.Interface
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> expression);
+        Task<IQueryable<T>> GetAsyncToInclude(Expression<Func<T, bool>> expression);
         Task<T?> GetByIdAsync(int id);
         Task<int> GetCountAsync();
         Task AddAsync(T entity);

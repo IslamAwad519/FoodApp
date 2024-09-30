@@ -1,8 +1,11 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.DTOs;
+using FoodApp.Api.Errors;
+using FoodApp.Api.Helper;
 using FoodApp.Api.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Helper;
 
@@ -10,13 +13,7 @@ namespace FoodApp.Api.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public AccountController(IMediator mediator) 
-        {
-            _mediator = mediator;
-        }
-
+        public AccountController(ControllerParameters controllerParameters) : base(controllerParameters) { }
 
         [HttpPost("Register")]
         public async Task<Result> Register(RegisterViewModel viewModel)
@@ -31,7 +28,20 @@ namespace FoodApp.Api.Controllers
         {
             var command = viewModel.Map<LoginCommand>();
             var result = await _mediator.Send(command);
+            if (result.Data == null || string.IsNullOrEmpty(result.Data.RefreshToken))
+            {
+                return Result.Failure<LoginResponse>(UserErrors.InvalidCredentials);
+            }
+            CookieHelper.SetRefreshTokenCookie(Response, result.Data.RefreshToken);
+            return result;
 
+        }
+
+        [HttpPost("RefreshToken")]
+        public async Task<Result<LoginResponse>> RefreshToken()
+        {
+            var refreshToken = CookieHelper.GetRefreshTokenCookie(Request);
+            var result = await _mediator.Send(new RefreshTokenCommand(refreshToken));
             return result;
 
         }
@@ -61,5 +71,7 @@ namespace FoodApp.Api.Controllers
 
             return response;
         }
+
+
     }
 }

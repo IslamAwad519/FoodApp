@@ -2,8 +2,10 @@
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
 using FoodApp.Api.CQRS.Users.Commands;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Helper;
@@ -12,13 +14,9 @@ namespace FoodApp.Api.Controllers
 {
     public class RolesController : BaseController
     {
-        private readonly IMediator _mediator;
+        public RolesController(ControllerParameters controllerParameters) : base(controllerParameters) { }
 
-        public RolesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
+        [Authorize]
         [HttpPost("AddRole")]
         public async Task<Result<bool>> AddRoleToUser([FromBody] CreateRoleViewModel viewModel)
         {
