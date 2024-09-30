@@ -22,6 +22,14 @@ namespace FoodApp.Api.Helper
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             });
 
+            if (user.UserRoles != null)
+            {
+                foreach (var userRole in user.UserRoles)
+                {
+                    claims.AddClaim(new Claim(ClaimTypes.Role, userRole.Role.Name));
+                }
+            }
+
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Key));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
