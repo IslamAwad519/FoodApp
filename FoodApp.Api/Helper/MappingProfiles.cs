@@ -16,7 +16,8 @@ namespace FoodApp.Api.Helper
 
             CreateMap<LoginViewModel, LoginCommand>();
             CreateMap<ChangePasswordViewModel, ChangePasswordCommand>();
-
+            CreateMap<ForgotPasswordViewModel, ForgotPasswordCommand>();
+            CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
         }
     }
 }

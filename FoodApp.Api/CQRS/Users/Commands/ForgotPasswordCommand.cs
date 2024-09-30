@@ -19,19 +19,24 @@ namespace FoodApp.Api.CQRS.Users.Commands
             if (user == null)
                 return Result.Failure<bool>(UserErrors.UserNotFound);
 
-            if (!user.IsEmailVerified)
-                return Result.Failure<bool>(UserErrors.UserNotVerified);
+            var otpCode = GenerateOTP();
+            user.PasswordResetOTP = otpCode;
+            user.PasswordResetOTPExpiration = DateTime.Now.AddMinutes(5);
 
+            var userRepo = _unitOfWork.Repository<User>();
+            userRepo.Update(user);
+            await userRepo.SaveChangesAsync();
 
-            var resetCode = Guid.NewGuid().ToString();
-            user.PasswordResetCode = resetCode;
-            await _unitOfWork.Repository<User>().SaveChangesAsync();
-
-            var resetUrl = $"https://localhost:7120/api/Account/reset-password?email={request.Email}&code={resetCode}";
-
-            await _emailSenderHelper.SendEmailAsync(request.Email, "Reset Your Password", $"Please reset your password by clicking the link: <a href='{resetUrl}'>Reset Password</a>");
+            var emailContent = $"Your OTP code to reset your password is: {otpCode}";
+            await _emailSenderHelper.SendEmailAsync(request.Email, "Reset Your Password", emailContent);
 
             return Result.Success(true);
+        }
+
+        private string GenerateOTP()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString();
         }
     }
 }

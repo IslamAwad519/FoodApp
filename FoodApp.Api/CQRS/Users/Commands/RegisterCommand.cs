@@ -13,7 +13,8 @@ namespace FoodApp.Api.CQRS.Users.Commands
      string Email,
      string Country,
      string PhoneNumber,
-     string Password) : IRequest<Result>;
+     string Password,
+     string ConfirmPassword ) : IRequest<Result>;
 
     public class RegisterCommandHandler : BaseRequestHandler<RegisterCommand, Result>
     {
@@ -29,7 +30,11 @@ namespace FoodApp.Api.CQRS.Users.Commands
 
             var user = request.Map<User>();
 
+            if (request.Password != request.ConfirmPassword)
+                return Result.Failure<bool>(UserErrors.PasswordsDoNotMatch);
+
             user.PasswordHash = PasswordHasher.HashPassword(request.Password);
+            
 
             var userRepo = _unitOfWork.Repository<User>();
 

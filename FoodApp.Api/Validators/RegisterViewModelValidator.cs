@@ -24,6 +24,10 @@ namespace FoodApp.Api.Validators
                 .NotEmpty().WithMessage("Password is required.")
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
                 .WithMessage("Password must be at least 8 characters long, and include at least one uppercase letter, one lowercase letter, one digit, and one special character");
+
+            RuleFor(x => x.ConfirmPassword)
+             .NotEmpty().WithMessage("Password is required.");
+
         }
     }
 }
