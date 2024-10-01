@@ -23,10 +23,6 @@ namespace FoodApp.Api.Controllers
             _userState.Role = loggedUser.FindFirst("RoleID")?.Value ?? string.Empty;
             _userState.ID = loggedUser.FindFirst("UserId")?.Value ?? string.Empty;
             _userState.Name = loggedUser.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-
-
-
-
         }
     }
 }
