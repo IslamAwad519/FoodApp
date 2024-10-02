@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Helper;
 using FoodApp.Api.Repository.Interface;
@@ -9,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManagementSystem.Data.Context;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
 namespace FoodApp.Api.Extensions
@@ -17,20 +19,16 @@ namespace FoodApp.Api.Extensions
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers().AddFluentValidation(fv =>
-            {
-                fv.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-            });
+            services.AddControllers();
 
-            services.AddSwaggerServices();
+            services.AddMediatRServices();
+
+            services.AddSwaggerServices()
+                    .AddFluentValidationConfig();
+
+            services.AddHttpContextAccessor();
+
             services.AddAuthConfig(configuration);
-            services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
-            services.AddTransient<EmailSenderHelper>();
-
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
-
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
 
             services.AddDbContext<ApplicationDBContext>(options =>
             {
@@ -39,17 +37,28 @@ namespace FoodApp.Api.Extensions
                 .EnableSensitiveDataLogging();
             });
 
-           
+            services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<UserState>();
             services.AddScoped<RequestParameters>();
             services.AddScoped<ControllerParameters>();
+            services.AddTransient<EmailSenderHelper>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
 
+            return services;
+        }
+
+        private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
+        {
+            services
+                .AddFluentValidationAutoValidation()
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return services;
         }
+
         private static IServiceCollection AddSwaggerServices(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
@@ -87,6 +96,7 @@ namespace FoodApp.Api.Extensions
 
             return services;
         }
+
         private static IServiceCollection AddAuthConfig(this IServiceCollection services,
         IConfiguration configuration)
         {
@@ -120,6 +130,13 @@ namespace FoodApp.Api.Extensions
 
             return services;
         }
-    }
 
+        private static IServiceCollection AddMediatRServices(this IServiceCollection services)
+        {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+
+            return services;
+        }
+
+    }
 }

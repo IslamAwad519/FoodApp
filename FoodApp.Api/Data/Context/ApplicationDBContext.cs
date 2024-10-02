@@ -1,4 +1,5 @@
 ﻿using FoodApp.Api.Data.Entities;
+using FoodApp.Api.Data.Entities.RecipeEntity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -9,7 +10,8 @@ namespace ProjectManagementSystem.Data.Context
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             :base(options) 
         {
-            
+           // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,5 +24,7 @@ namespace ProjectManagementSystem.Data.Context
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Role> roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
