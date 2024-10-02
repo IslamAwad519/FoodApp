@@ -4,7 +4,6 @@ using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
 using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.Data.Entities;
-using FoodApp.Api.Data.Entities.RecipeEntity;
 using FoodApp.Api.Helper.RecipeUrlResolve;
 using FoodApp.Api.ViewModels;
 using static System.Net.Mime.MediaTypeNames;

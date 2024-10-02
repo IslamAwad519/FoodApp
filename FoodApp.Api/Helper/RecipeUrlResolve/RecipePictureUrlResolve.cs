@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FoodApp.Api.CQRS.Recipes.Commands;
-using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Data.Entities;
 
 namespace FoodApp.Api.Helper.RecipeUrlResolve;
 
