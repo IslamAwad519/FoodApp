@@ -1,5 +1,4 @@
 ﻿using FoodApp.Api.Data.Entities;
-using FoodApp.Api.Data.Entities.RecipeEntity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
