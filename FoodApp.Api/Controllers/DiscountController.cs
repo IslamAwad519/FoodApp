@@ -52,12 +52,6 @@ namespace FoodApp.Api.Controllers
             return result;
         }
 
-        [HttpGet("GetActiveDiscount/{id}")]
-        public async Task<Result<DiscountToReturnDto>> GetDiscountById(int id)
-        {
-            var result = await _mediator.Send(new GetDiscountByIdQuery(id));
-            return result;
-        }
         [HttpPost("ApplyDiscount")]
         public async Task<Result<decimal>> ApplyDiscount(ApplyDiscountViewModel viewModel)
         {

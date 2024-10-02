@@ -18,7 +18,8 @@ namespace FoodApp.Api.CQRS.Discounts.Commands
         {
 
             var discountResult =await _mediator.Send(new GetDiscountByIdQuery(request.DiscountId));
-            var discount = discountResult.Data.Map<Discount>();
+            var discount = discountResult.Data;
+
             if (discount == null)
             {
                 return Result.Failure<bool>(DiscountErrors.DiscountNotFound);

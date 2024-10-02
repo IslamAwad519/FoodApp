@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FoodApp.Api.CQRS.Discounts.Commands;
+using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
@@ -61,6 +63,13 @@ namespace FoodApp.Api.Helper
                  {
                      dest.ImageUrl = await DocumentSettings.UploadFileAsync(src.ImageUrl, "Images");
                  });
+
+            //Discount
+            CreateMap<AddDiscountViewModel, AddDiscountCommand>();
+            CreateMap<AddDiscountCommand, Discount>();
+            CreateMap<ApplyDiscountViewModel, ApplyDiscountCommand>();
+            CreateMap<Discount, DiscountToReturnDto>().ReverseMap();
+            CreateMap<UpdateDiscountCommand, Discount>();
         }
     }
 }
