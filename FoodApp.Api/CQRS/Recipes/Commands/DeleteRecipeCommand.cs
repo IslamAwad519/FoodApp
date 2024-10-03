@@ -1,6 +1,6 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Recipes.Queries;
-using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;

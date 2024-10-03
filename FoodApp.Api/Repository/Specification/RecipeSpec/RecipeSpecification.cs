@@ -1,13 +1,23 @@
-﻿using FoodApp.Api.Data.Entities.RecipeEntity;
+﻿using FoodApp.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodApp.Api.Repository.Specification;
+namespace FoodApp.Api.Repository.Specification.RecipeSpec;
 
-public class RecipeSpec : BaseSpecification<Recipe>
+public class RecipeSpecification : BaseSpecification<Recipe>
 {
-    public RecipeSpec(SpecParams spec)
+    public RecipeSpecification(int id)
+        :base(r=>r.Id == id)
     {
         Includes.Add(p => p.Include(p => p.Category));
+        Includes.Add(p => p.Include(p => p.RecipeDiscounts).ThenInclude(rd=>rd.Discount));
+
+
+    }
+    public RecipeSpecification(SpecParams spec)
+    {
+        Includes.Add(p => p.Include(p => p.Category));
+        Includes.Add(p => p.Include(p => p.RecipeDiscounts).ThenInclude(rd=>rd.Discount));
+
 
         if (!string.IsNullOrEmpty(spec.Search))
         {

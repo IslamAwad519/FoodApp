@@ -2,6 +2,8 @@
 using FoodApp.Api.CQRS.Discounts.Commands;
 using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.DTOs;
+using FoodApp.Api.Errors;
+using FoodApp.Api.Response;
 using FoodApp.Api.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,12 +47,25 @@ namespace FoodApp.Api.Controllers
             return result;
         }
 
+        [HttpGet("ViewDiscount/{id}")]
+        public async Task<Result<DiscountToReturnDto>> GetDiscountById(int id)
+        {
+            var result = await _mediator.Send(new GetDiscountByIdQuery(id));
+            if(!result.IsSuccess)
+            {
+                return Result.Failure<DiscountToReturnDto>(DiscountErrors.DiscountNotFound);
+            }
+            var discount = result.Data.Map<DiscountToReturnDto>();
+            return Result.Success(discount);
+        }
+
         [HttpGet("GetActiveDiscounts")]
         public async Task<Result<IEnumerable<DiscountToReturnDto>>> GetAllActiveDiscounts()
         {
             var result = await _mediator.Send(new GetAllActiveDiscountsQuery());
             return result;
         }
+
 
 
         [HttpPost("ApplyDiscount")]

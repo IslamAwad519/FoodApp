@@ -4,6 +4,7 @@ using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
+using ProjectManagementSystem.Helper;
 
 namespace FoodApp.Api.CQRS.Categories.Commands
 {
@@ -20,7 +21,9 @@ namespace FoodApp.Api.CQRS.Categories.Commands
                 return Result.Failure<bool>(CategoryErrors.CategoryNotFound);
             }
 
-            _unitOfWork.Repository<Category>().Delete(categoryResult.Data);
+            var category = categoryResult.Data;
+
+            _unitOfWork.Repository<Category>().Delete(category);
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success(true);

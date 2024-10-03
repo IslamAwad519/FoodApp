@@ -1,7 +1,8 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Repository.Interface;
 using FoodApp.Api.Repository.Specification;
+using FoodApp.Api.Repository.Specification.RecipeSpec.RecipeSpec;
 using MediatR;
 
 namespace FoodApp.Api.CQRS.Recipes.Queries;

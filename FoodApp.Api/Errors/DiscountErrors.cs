@@ -15,5 +15,9 @@ namespace FoodApp.Api.Errors
 
         public static readonly Error DiscoutNotActive =
              new("Discount Not Active", StatusCodes.Status404NotFound);
+
+
+        public static readonly Error ActiveDiscountAlreadyExists =
+             new("Ther is Active Discount Already Applyed to this recipe ", StatusCodes.Status400BadRequest);
     }
 }

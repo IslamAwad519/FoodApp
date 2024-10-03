@@ -1,6 +1,6 @@
-﻿using FoodApp.Api.Data.Entities.RecipeEntity;
+﻿using FoodApp.Api.Data.Entities;
 
-namespace FoodApp.Api.Repository.Specification;
+namespace FoodApp.Api.Repository.Specification.RecipeSpec.RecipeSpec;
 
 public class CountRecipeWithSpec : BaseSpecification<Recipe>
 {

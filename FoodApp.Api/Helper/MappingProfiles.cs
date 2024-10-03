@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FoodApp.Api.CQRS.Categories.Commands;
+using FoodApp.Api.CQRS.Categories.Queries;
 using FoodApp.Api.CQRS.Discounts.Commands;
 using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
@@ -9,6 +11,7 @@ using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Helper.RecipeUrlResolve;
 using FoodApp.Api.Response;
 using FoodApp.Api.ViewModels;
+using System.Threading.Channels;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FoodApp.Api.Helper
@@ -64,6 +67,31 @@ namespace FoodApp.Api.Helper
                  {
                      dest.ImageUrl = await DocumentSettings.UploadFileAsync(src.ImageUrl, "Images");
                  });
+
+            CreateMap<Recipe, RecipeToReturnDto>()
+                  .ForMember(dest => dest.Discount, opt => opt.MapFrom(src =>src.RecipeDiscounts
+                  .Where(rd => rd.Discount != null && rd.Discount.IsActive)
+                  .Select(rd => rd.Discount.DiscountPercent)
+                 .FirstOrDefault())).ReverseMap();
+            // Discount 
+
+            CreateMap<UpdateDiscountCommand, Discount>()
+             .ForMember(dest => dest.DiscountPercent, opt => opt.Condition(src => src.DiscountPercent.HasValue))
+             .ForMember(dest => dest.StartDate, opt => opt.Condition(src => src.StartDate.HasValue))
+             .ForMember(dest => dest.EndDate, opt => opt.Condition(src => src.EndDate.HasValue));
+
+            CreateMap<AddDiscountCommand, Discount>();
+            CreateMap<DiscountToReturnDto, Discount>().ReverseMap();
+            CreateMap<AddDiscountViewModel, AddDiscountCommand>();
+            CreateMap<ApplyDiscountViewModel, ApplyDiscountCommand>();
+
+            //category
+
+            CreateMap<CreateCategoryViewModel, CreateCategoryCommand>();
+            CreateMap<CreateCategoryCommand, Category>();
+            CreateMap<CategoryToReturnDto, Category>().ReverseMap();
+            CreateMap<Recipe, RecipesNamesToReturnDto>();
+
         }
     }
 }

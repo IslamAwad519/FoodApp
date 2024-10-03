@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using FoodApp.Api.CQRS.Recipes.Commands;
-using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Response;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FoodApp.Api.Helper.RecipeUrlResolve;
 
-public class RecipePictureUrlResolve : IValueResolver<Recipe, RecipeResponse, string>
+public class RecipePictureUrlResolve : IValueResolver<Recipe, RecipeToReturnDto, string>
 {
 
     private readonly IConfiguration _configuration;
@@ -16,7 +16,7 @@ public class RecipePictureUrlResolve : IValueResolver<Recipe, RecipeResponse, st
         _configuration = configuration;
     }
 
-    public string Resolve(Recipe source, RecipeResponse destination, string destMember, ResolutionContext context)
+    public string Resolve(Recipe source, RecipeToReturnDto destination, string destMember, ResolutionContext context)
     {
         if (!string.IsNullOrEmpty(source.ImageUrl))
         {
