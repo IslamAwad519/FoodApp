@@ -15,7 +15,7 @@ namespace FoodApp.Api.CQRS.Users.Queries
 
         public override async Task<Result<User>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = (await _unitOfWork.Repository<User>().GetAsync(u => u.Id == request.UserId && !u.IsDeleted)).FirstOrDefault();
+            var user = await _unitOfWork.Repository<User>().FirstAsync(u => u.Id == request.UserId && !u.IsDeleted);
 
             if (user == null)
             {

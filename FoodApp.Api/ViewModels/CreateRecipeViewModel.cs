@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Data.Entities;
 using MediatR;
 
 namespace FoodApp.Api.ViewModels;

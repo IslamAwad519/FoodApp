@@ -1,4 +1,4 @@
-﻿namespace FoodApp.Api.Data.Entities.RecipeEntity;
+﻿namespace FoodApp.Api.Data.Entities;
 
 public class Category : BaseEntity
 {

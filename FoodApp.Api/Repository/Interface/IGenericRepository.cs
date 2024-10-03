@@ -14,7 +14,6 @@ namespace FoodApp.Api.Repository.Interface
         void Update(T entity);
         void Delete(T entity);
         void DeleteById(int id);
-
         Task<int> SaveChangesAsync();
         Task<T> FirstAsync(Expression<Func<T, bool>> predicate);
         Task<IQueryable<T>> GetAsyncToInclude(Expression<Func<T, bool>> expression);

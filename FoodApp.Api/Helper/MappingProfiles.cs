@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using FoodApp.Api.CQRS.Discounts.Commands;
+using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
 using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.Data.Entities;
-using FoodApp.Api.Data.Entities.RecipeEntity;
 using FoodApp.Api.Helper.RecipeUrlResolve;
 using FoodApp.Api.Response;
 using FoodApp.Api.ViewModels;
@@ -63,10 +64,6 @@ namespace FoodApp.Api.Helper
                  {
                      dest.ImageUrl = await DocumentSettings.UploadFileAsync(src.ImageUrl, "Images");
                  });
-
-            CreateMap<Recipe, RecipeResponse>()
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom<RecipePictureUrlResolve>())
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
         }
     }
 }

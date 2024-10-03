@@ -2,7 +2,6 @@
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.Roles.Queries;
 using FoodApp.Api.Data.Entities;
-using FoodApp.Api.Data.Entities.RecipeEntity;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
