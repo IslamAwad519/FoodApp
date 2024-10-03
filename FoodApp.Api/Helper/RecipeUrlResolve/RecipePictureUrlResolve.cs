@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.Data.Entities.RecipeEntity;
+using FoodApp.Api.Response;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FoodApp.Api.Helper.RecipeUrlResolve;
 
-public class RecipePictureUrlResolve : IValueResolver<CreateRecipeCommand, Recipe, string>
+public class RecipePictureUrlResolve : IValueResolver<Recipe, RecipeResponse, string>
 {
 
     private readonly IConfiguration _configuration;
@@ -13,32 +15,13 @@ public class RecipePictureUrlResolve : IValueResolver<CreateRecipeCommand, Recip
     {
         _configuration = configuration;
     }
-    public string Resolve(CreateRecipeCommand source, Recipe destination, string destMember, ResolutionContext context)
+
+    public string Resolve(Recipe source, RecipeResponse destination, string destMember, ResolutionContext context)
     {
-        throw new NotImplementedException();
+        if (!string.IsNullOrEmpty(source.ImageUrl))
+        {
+            return $"{_configuration["ApiBaseUrl"]}Files/Images/{source.ImageUrl}";
+        }
+        return string.Empty;
     }
 }
-
-//public class RoomPictureUrlResolve : IValueResolver<RoomToReturnDto, RoomViewModel, List<string>>
-//{
-
-//    private readonly IConfiguration _configuration;
-
-//    public RoomPictureUrlResolve(IConfiguration configuration)
-//    {
-//        _configuration = configuration;
-//    }
-
-//    public List<string> Resolve(RoomToReturnDto source, RoomViewModel destination, List<string> destMember, ResolutionContext context)
-//    {
-//        var images = new List<string>();
-//        foreach (var img in source.Images)
-//        {
-//            if (!string.IsNullOrEmpty(img))
-//            {
-//                images.Add($"{_configuration["ApiBaseUrl"]}Files/Images/{img}");
-//            }
-//        }
-//        return images;
-//    }
-//}

@@ -20,6 +20,7 @@ public record UpdateRecipeCommand(
 public class UpdateRecipeCommandHandler : BaseRequestHandler<UpdateRecipeCommand, Result<bool>>
 {
     public UpdateRecipeCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+
     public override async Task<Result<bool>> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipeResult = await _mediator.Send(new GetRecipeByIdQuery(request.RecipeId));
