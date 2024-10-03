@@ -28,7 +28,7 @@ namespace FoodApp.Api.Repository.Repository
             return await query.ToListAsync();
         }
 
-        public  async Task<IQueryable<T>> GetAsyncToInclude(Expression<Func<T, bool>> expression)
+        public async Task<IQueryable<T>> GetAsyncToInclude(Expression<Func<T, bool>> expression)
         {
             var query = _dBContext.Set<T>().AsQueryable();
             query = query.Where(x => !x.IsDeleted);
@@ -85,5 +85,8 @@ namespace FoodApp.Api.Repository.Repository
         {
             return await GetAll(predicate).FirstOrDefaultAsync();
         }
+
+
+ 
     }
 }

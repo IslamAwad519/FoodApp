@@ -52,6 +52,7 @@ namespace FoodApp.Api.Controllers
             return result;
         }
 
+
         [HttpPost("ApplyDiscount")]
         public async Task<Result<decimal>> ApplyDiscount(ApplyDiscountViewModel viewModel)
         {

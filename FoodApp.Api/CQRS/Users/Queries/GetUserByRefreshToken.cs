@@ -2,8 +2,10 @@
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
+using FoodApp.Api.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FoodApp.Api.CQRS.Users.Queries
 {
@@ -17,7 +19,7 @@ namespace FoodApp.Api.CQRS.Users.Queries
         {
 
             var user = (await _unitOfWork.Repository<User>()
-                     .GetAsyncToInclude(u => u.RefreshTokens.Any(r => r.Token == request.refreshToken))).Include(u=>u.RefreshTokens).FirstOrDefault();
+                            .GetAsyncToInclude(u => u.RefreshTokens.Any(r => r.Token == request.refreshToken))).Include(u => u.RefreshTokens).FirstOrDefault();
 
             if (user == null)
             {

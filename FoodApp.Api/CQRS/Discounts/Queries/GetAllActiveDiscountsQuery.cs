@@ -6,7 +6,7 @@ using ProjectManagementSystem.Helper;
 
 namespace FoodApp.Api.CQRS.Discounts.Queries
 {
-    public record DiscountToReturnDto(int Id, decimal DiscountPercent, DateTime StartDate, DateTime EndDate) ;
+    public record DiscountToReturnDto(int Id, decimal DiscountPercent, DateTime StartDate, DateTime EndDate, DateTime DateCreated) ;
     public record GetAllActiveDiscountsQuery() : IRequest<Result<IEnumerable<DiscountToReturnDto>>>;
 
     public class GetAllActiveDiscountsQueryHandler : BaseRequestHandler<GetAllActiveDiscountsQuery, Result<IEnumerable<DiscountToReturnDto>>>

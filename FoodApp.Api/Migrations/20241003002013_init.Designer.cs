@@ -9,11 +9,11 @@ using ProjectManagementSystem.Data.Context;
 
 #nullable disable
 
-namespace FoodApp.Api.Data.Migrations
+namespace FoodApp.Api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240929084304_AddRelationBetweenUserAndRefreshTokens")]
-    partial class AddRelationBetweenUserAndRefreshTokens
+    [Migration("20241003002013_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,96 @@ namespace FoodApp.Api.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FoodApp.Api.Data.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("FoodApp.Api.Data.Entities.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("discounts");
+                });
+
+            modelBuilder.Entity("FoodApp.Api.Data.Entities.Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Recipes");
+                });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.RefreshToken", b =>
                 {
@@ -36,20 +126,23 @@ namespace FoodApp.Api.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ExpiresOn")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("RevokedOn")
+                    b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -66,6 +159,9 @@ namespace FoodApp.Api.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -144,6 +240,9 @@ namespace FoodApp.Api.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -162,11 +261,26 @@ namespace FoodApp.Api.Data.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("FoodApp.Api.Data.Entities.Recipe", b =>
+                {
+                    b.HasOne("FoodApp.Api.Data.Entities.Category", "Category")
+                        .WithMany("Recipes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("FoodApp.Api.Data.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("FoodApp.Api.Data.Entities.User", null)
+                    b.HasOne("FoodApp.Api.Data.Entities.User", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.UserRole", b =>
@@ -186,6 +300,11 @@ namespace FoodApp.Api.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FoodApp.Api.Data.Entities.Category", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.User", b =>

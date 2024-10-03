@@ -66,10 +66,13 @@ namespace FoodApp.Api.Helper
 
             //Discount
             CreateMap<AddDiscountViewModel, AddDiscountCommand>();
-            CreateMap<AddDiscountCommand, Discount>();
+            CreateMap<AddDiscountCommand, Data.Entities.Discount>();
             CreateMap<ApplyDiscountViewModel, ApplyDiscountCommand>();
-            CreateMap<Discount, DiscountToReturnDto>().ReverseMap();
-            CreateMap<UpdateDiscountCommand, Discount>();
+            CreateMap<Discount, Discount>().ReverseMap();
+            CreateMap<UpdateDiscountCommand, Data.Entities.Discount>()    
+                .ForMember(dest => dest.DiscountPercent, opt => opt.Condition(src => src.DiscountPercent.HasValue))
+                .ForMember(dest => dest.StartDate, opt => opt.Condition(src => src.StartDate.HasValue))
+                .ForMember(dest => dest.EndDate, opt => opt.Condition(src => src.EndDate.HasValue)); ;
         }
     }
 }
