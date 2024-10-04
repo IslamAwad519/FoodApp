@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
@@ -7,7 +7,7 @@ using FoodApp.Api.Helper;
 using MediatR;
 using ProjectManagementSystem.Helper;
 
-namespace FoodApp.Api.CQRS.Users.Commands
+namespace FoodApp.Api.CQRS.Account.Commands
 {
     public record LoginCommand(string Email, string Password) : IRequest<Result<LoginResponse>>;
     public class LoginResponse()
@@ -17,7 +17,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
         public string Token { get; set; }
         public string RefreshToken { get; set; }
     }
-    
+
     public class LoginCommandHandler : BaseRequestHandler<LoginCommand, Result<LoginResponse>>
     {
         public LoginCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
@@ -52,7 +52,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
                 Token = token,
             };
 
-            var userRepo= _unitOfWork.Repository<User>();
+            var userRepo = _unitOfWork.Repository<User>();
             var refreshTokensResult = await _mediator.Send(new GetUserActiveRefreshTokensQuery(user.Id));
 
             if (refreshTokensResult.IsSuccess)
@@ -73,9 +73,9 @@ namespace FoodApp.Api.CQRS.Users.Commands
 
             return Result.Success(loginResponse);
 
-           
+
         }
-     
+
     }
 
 

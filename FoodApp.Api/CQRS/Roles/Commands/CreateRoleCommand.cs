@@ -1,6 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Roles.Queries;
-using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;

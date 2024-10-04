@@ -1,12 +1,12 @@
 ﻿using FoodApp.Api.Abstraction;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
-using ProjectManagementSystem.CQRS.Users.Queries;
 using ProjectManagementSystem.Helper;
 
-namespace FoodApp.Api.CQRS.Users.Commands
+namespace FoodApp.Api.CQRS.Account.Commands
 {
     public record RegisterCommand(
      string UserName,
@@ -14,7 +14,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
      string Country,
      string PhoneNumber,
      string Password,
-     string ConfirmPassword ) : IRequest<Result>;
+     string ConfirmPassword) : IRequest<Result>;
 
     public class RegisterCommandHandler : BaseRequestHandler<RegisterCommand, Result>
     {
@@ -34,7 +34,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
                 return Result.Failure<bool>(UserErrors.PasswordsDoNotMatch);
 
             user.PasswordHash = PasswordHasher.HashPassword(request.Password);
-            
+
 
             var userRepo = _unitOfWork.Repository<User>();
 

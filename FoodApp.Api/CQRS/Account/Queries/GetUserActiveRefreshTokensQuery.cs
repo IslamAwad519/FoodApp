@@ -5,7 +5,7 @@ using FoodApp.Api.Errors;
 using FoodApp.Api.Repository.Interface;
 using MediatR;
 
-namespace FoodApp.Api.CQRS.Users.Queries
+namespace FoodApp.Api.CQRS.Account.Queries
 {
     public record GetUserActiveRefreshTokensQuery(int userId) : IRequest<Result<List<RefreshToken>>>;
     public class GetUserRefreshTokensQueryHandler : BaseRequestHandler<GetUserActiveRefreshTokensQuery, Result<List<RefreshToken>>>

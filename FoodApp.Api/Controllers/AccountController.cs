@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Commands;
+using FoodApp.Api.CQRS.Account.Commands;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Helper;

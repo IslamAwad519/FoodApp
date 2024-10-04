@@ -1,17 +1,17 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
 
-namespace FoodApp.Api.CQRS.Users.Commands
+namespace FoodApp.Api.CQRS.Account.Commands
 {
-    public record RevokeTokenCommand (string token) :IRequest<Result<bool>>;
+    public record RevokeTokenCommand(string token) : IRequest<Result<bool>>;
 
-    public class RevokeTokenCommandHandler :BaseRequestHandler<RevokeTokenCommand, Result<bool>>
+    public class RevokeTokenCommandHandler : BaseRequestHandler<RevokeTokenCommand, Result<bool>>
     {
-        public RevokeTokenCommandHandler(RequestParameters requestParameters): base(requestParameters) { }
+        public RevokeTokenCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
         public async override Task<Result<bool>> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
         {

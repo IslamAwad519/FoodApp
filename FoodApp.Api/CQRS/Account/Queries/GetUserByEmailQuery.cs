@@ -4,13 +4,13 @@ using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
 
-namespace FoodApp.Api.CQRS.Users.Queries
+namespace FoodApp.Api.CQRS.Account.Queries
 {
     public record GetUserByEmailQuery(string Email) : IRequest<Result<User>>;
 
     public class GetUserByEmailQueryHandler : BaseRequestHandler<GetUserByEmailQuery, Result<User>>
     {
-    
+
         public GetUserByEmailQueryHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
         public override async Task<Result<User>> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)

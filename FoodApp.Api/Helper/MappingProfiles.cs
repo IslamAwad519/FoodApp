@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FoodApp.Api.CQRS.Account.Commands;
 using FoodApp.Api.CQRS.Categories.Commands;
 using FoodApp.Api.CQRS.Categories.Queries;
 using FoodApp.Api.CQRS.Discounts.Commands;
@@ -6,7 +7,7 @@ using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
-using FoodApp.Api.CQRS.Users.Commands;
+using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Helper.RecipeUrlResolve;
 using FoodApp.Api.Response;
@@ -20,7 +21,7 @@ namespace FoodApp.Api.Helper
     {
         public MappingProfiles()
         {
-            /***************  User  ***************/
+            /***************  Account  ***************/
 
             CreateMap<RegisterCommand, User>()
                 .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => DateTime.Now));
@@ -33,7 +34,12 @@ namespace FoodApp.Api.Helper
             CreateMap<ForgotPasswordViewModel, ForgotPasswordCommand>();
             CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
 
+            //Account
+
+            CreateMap<User, UserToReturnDto>();
+
             /***************  Role  ***************/
+
 
             CreateMap<CreateRoleCommand, Role>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.roleName)); ;

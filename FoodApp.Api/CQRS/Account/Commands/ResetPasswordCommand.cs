@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
@@ -7,7 +7,7 @@ using FoodApp.Api.Repository.Interface;
 using MediatR;
 using ProjectManagementSystem.Helper;
 
-namespace FoodApp.Api.CQRS.Users.Commands
+namespace FoodApp.Api.CQRS.Account.Commands
 {
     public record ResetPasswordCommand(string Email, string OTP, string NewPassword, string ConfirmPassword) : IRequest<Result<bool>>;
 

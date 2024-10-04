@@ -1,18 +1,18 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Helper;
 using MediatR;
 
-namespace FoodApp.Api.CQRS.Users.Commands
+namespace FoodApp.Api.CQRS.Account.Commands
 {
-    public record RefreshTokenCommand (string  token) :IRequest<Result<LoginResponse>>;
+    public record RefreshTokenCommand(string token) : IRequest<Result<LoginResponse>>;
 
-    public class RefreshTokenCommandHandler :BaseRequestHandler<RefreshTokenCommand, Result<LoginResponse>>
+    public class RefreshTokenCommandHandler : BaseRequestHandler<RefreshTokenCommand, Result<LoginResponse>>
     {
-        public RefreshTokenCommandHandler(RequestParameters requestParameters):base(requestParameters ){ }
+        public RefreshTokenCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
         public async override Task<Result<LoginResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
@@ -46,7 +46,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
                 Id = user.Id,
                 Email = user.Email,
                 Token = jwtToken,
-                RefreshToken = newRefreshToken.Token                        
+                RefreshToken = newRefreshToken.Token
             };
 
             return Result.Success(loginResponse);

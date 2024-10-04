@@ -4,7 +4,7 @@ using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
 
-namespace FoodApp.Api.CQRS.Users.Queries
+namespace FoodApp.Api.CQRS.Account.Queries
 {
     public record GetUserByIdQuery(int UserId) : IRequest<Result<User>>;
     public class GetUserByIdQueryHandler : BaseRequestHandler<GetUserByIdQuery, Result<User>>

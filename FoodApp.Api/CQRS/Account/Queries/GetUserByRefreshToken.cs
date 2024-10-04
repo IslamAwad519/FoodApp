@@ -7,11 +7,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace FoodApp.Api.CQRS.Users.Queries
+namespace FoodApp.Api.CQRS.Account.Queries
 {
-    public record GetUserByRefreshToken(string refreshToken ):IRequest<Result<User>>;
+    public record GetUserByRefreshToken(string refreshToken) : IRequest<Result<User>>;
 
-    public class GetUserByRefreshTokenHandler: BaseRequestHandler<GetUserByRefreshToken, Result<User>>
+    public class GetUserByRefreshTokenHandler : BaseRequestHandler<GetUserByRefreshToken, Result<User>>
     {
         public GetUserByRefreshTokenHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
