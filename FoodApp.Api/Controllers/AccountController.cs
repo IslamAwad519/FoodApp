@@ -1,5 +1,6 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Account.Commands;
+using FoodApp.Api.CQRS.Account.Orchestrator;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Helper;
@@ -18,11 +19,27 @@ namespace FoodApp.Api.Controllers
         [HttpPost("Register")]
         public async Task<Result> Register(RegisterViewModel viewModel)
         {
-            var command = viewModel.Map<RegisterCommand>();
+            var command = viewModel.Map<RegisterOrchestrator>();
             var result= await _mediator.Send(command);
             return result;
 
         }
+        [HttpPost("VerifyAccount")]
+        public async Task<Result<bool>> Verify(VerifyViewModel viewModel)
+        {
+            var command = viewModel.Map<VerifyOTPCommand>();
+            var result = await _mediator.Send(command);
+            return result;
+
+        }
+        [HttpPost("ResendVerificationCode")]
+        public async Task<Result<bool>> ResendVerificationCode(string email)
+        {
+            var result = await _mediator.Send(new SendVerificationOTP(email));
+            return result;
+
+        }
+
         [HttpPost("Login")]
         public async Task<Result<LoginResponse>> Login(LoginViewModel viewModel)
         {

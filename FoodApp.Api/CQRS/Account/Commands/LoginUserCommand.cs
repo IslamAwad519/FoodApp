@@ -37,7 +37,7 @@ namespace FoodApp.Api.CQRS.Account.Commands
             }
 
             var user = userResult.Data;
-            if (!PasswordHasher.checkPassword(request.Password, user.PasswordHash))
+            if (!PasswordHasher.checkPassword(request.Password, user.PasswordHash) /*|| !user.IsEmailVerified*/)
             {
                 return Result.Failure<LoginResponse>(UserErrors.InvalidCredentials);
             }

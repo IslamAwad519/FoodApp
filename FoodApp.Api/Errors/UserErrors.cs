@@ -54,9 +54,14 @@ namespace FoodApp.Api.Errors
         public static readonly Error NoLoggedInUserFound =
               new("There Is No Logged User", StatusCodes.Status400BadRequest);
 
+
         public static readonly Error UserNotAuthenticated =
               new("You are not authenticated", StatusCodes.Status400BadRequest);
  
+
+        public static readonly Error EmailIsAlreadyVerified =
+              new("Email Is Already Verified", StatusCodes.Status400BadRequest);
+
     }
 
 }

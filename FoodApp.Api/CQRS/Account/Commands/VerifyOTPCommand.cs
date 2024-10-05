@@ -16,14 +16,17 @@ namespace FoodApp.Api.CQRS.Account.Commands
         public override async Task<Result<bool>> Handle(VerifyOTPCommand request, CancellationToken cancellationToken)
         {
             var userResult = await _mediator.Send(new GetUserByEmailQuery(request.Email));
-
+            if(!userResult.IsSuccess)
+            {
+                return Result.Failure<bool>(UserErrors.UserNotFound);
+            }
             var user = userResult.Data;
             if (user.VerificationOTPExpiration is not null && user.VerificationOTPExpiration < DateTime.Now)
             {
                 return Result.Failure<bool>(UserErrors.OTPExpired);
             }
 
-            if (user.VerificationOTP is not null && user.VerificationOTP != request.OTP)
+            if (user.VerificationOTP is not null && user.VerificationOTP != request.OTP )
             {
                 return Result.Failure<bool>(UserErrors.InvalidOTP);
             }

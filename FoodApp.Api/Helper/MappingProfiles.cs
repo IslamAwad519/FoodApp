@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FoodApp.Api.CQRS.Account.Commands;
+using FoodApp.Api.CQRS.Account.Orchestrator;
 using FoodApp.Api.CQRS.Categories.Commands;
 using FoodApp.Api.CQRS.Categories.Queries;
 using FoodApp.Api.CQRS.Discounts.Commands;
@@ -36,6 +37,9 @@ namespace FoodApp.Api.Helper
             CreateMap<ChangePasswordViewModel, ChangePasswordCommand>();
             CreateMap<ForgotPasswordViewModel, ForgotPasswordCommand>();
             CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
+            CreateMap<RegisterOrchestrator, RegisterCommand>();
+            CreateMap<RegisterViewModel, RegisterOrchestrator >();
+            CreateMap<VerifyViewModel, VerifyOTPCommand>();
 
             //user
             CreateMap<User, UserToReturnDto>();
