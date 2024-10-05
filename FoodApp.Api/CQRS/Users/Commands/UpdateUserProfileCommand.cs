@@ -24,7 +24,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
             var userId = _userState.ID;
             if (string.IsNullOrEmpty(userId))
             {
-                return Result.Failure<bool>(UserErrors.NoLoggedInUserFound);
+                return Result.Failure<bool>(UserErrors.UserNotAuthenticated);
             }
 
             var userResult = await _mediator.Send(new GetUserByIdQuery(int.Parse(userId)));
