@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Commands;
+using FoodApp.Api.CQRS.Account.Commands;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Helper;
@@ -59,13 +59,6 @@ namespace FoodApp.Api.Controllers
             return result;
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<Result<bool>> ChangePassword(ChangePasswordViewModel viewModel)
-        {
-            var command = viewModel.Map<ChangePasswordCommand>();
-            var response = await _mediator.Send(command);
-            return response;
-        }
 
         [HttpPost("ForgotPassword")]
         public async Task<Result<bool>> ForgotPassword(ForgotPasswordViewModel viewModel)

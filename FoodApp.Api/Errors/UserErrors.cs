@@ -37,7 +37,6 @@ namespace FoodApp.Api.Errors
         public static readonly Error PasswordsDoNotMatch =
             new("Passwords Do Not Match", StatusCodes.Status400BadRequest);
 
-
         public static readonly Error InvalidOTP =
             new("Invalid OTP", StatusCodes.Status400BadRequest);
 
@@ -51,6 +50,9 @@ namespace FoodApp.Api.Errors
         public static readonly Error TokenIsRequired =
               new("Token Is Required", StatusCodes.Status400BadRequest);
 
+
+        public static readonly Error NoLoggedInUserFound =
+              new("There Is No Logged User", StatusCodes.Status400BadRequest);
     }
 
 }

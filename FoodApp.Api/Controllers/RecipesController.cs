@@ -1,10 +1,12 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Recipes.Commands;
-using FoodApp.Api.CQRS.Roles.Commands;
+using FoodApp.Api.CQRS.Recipes.Queries;
 using FoodApp.Api.DTOs;
+using FoodApp.Api.Errors;
+using FoodApp.Api.Helper;
+using FoodApp.Api.Repository.Specification;
+using FoodApp.Api.Response;
 using FoodApp.Api.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Helper;
 
@@ -15,8 +17,8 @@ public class RecipesController : BaseController
     public RecipesController(ControllerParameters controllerParameters) : base(controllerParameters) { }
 
     //[Authorize]
-    [HttpPost("Add-Recipe")]
-    public async Task<Result<bool>> AddRecipe([FromForm] CreateRecipeViewModel viewModel)
+    [HttpPost("AddRecipe")]
+    public async Task<Result<bool>> AddRecipe([FromForm]CreateRecipeViewModel viewModel)
     {
         var command = viewModel.Map<CreateRecipeCommand>();
         var response = await _mediator.Send(command);
@@ -24,12 +26,54 @@ public class RecipesController : BaseController
     }
 
     //[Authorize]
-    [HttpPost("Update-Recipe")]
-    public async Task<Result<bool>> UpdateRecipe([FromForm] UpdateRecipeViewModel viewModel)
+    [HttpPut("UpdateRecipe")]
+    public async Task<Result<bool>> UpdateRecipe([FromForm]UpdateRecipeViewModel viewModel)
     {
         var command = viewModel.Map<UpdateRecipeCommand>();
         var response = await _mediator.Send(command);
         return response;
+    }
+
+    //[Authorize]
+    [HttpDelete("DeleteRecipe")]
+    public async Task<Result<bool>> DeleteRecipe( int RecipeId)
+    {
+        var command = new DeleteRecipeCommand(RecipeId);
+        var response = await _mediator.Send(command);
+        return response;
+    }
+
+    //[Authorize]
+    [HttpGet("ViewRecipe/{RecipeId}")]
+    public async Task<Result<RecipeToReturnDto>> GetRecipeById( int RecipeId)
+    {
+        var command = new GetRecipeByIdQuery(RecipeId);
+        var result = await _mediator.Send(command);
+        if (!result.IsSuccess)
+        {
+            return Result.Failure<RecipeToReturnDto>(RecipeErrors.RecipeNotFound);
+        }
+        var recipe = result.Data;
+
+        var response = recipe.Map<RecipeToReturnDto>();
+
+        return Result.Success(response);
+    }
+
+    //[Authorize]
+    [HttpGet("ListRecipes")]
+    public async Task<Result<Pagination<RecipeToReturnDto>>> GetAllRecipes([FromQuery] SpecParams spec)
+    {
+        var result = await _mediator.Send(new GetRecipesQuery(spec));
+        if (!result.IsSuccess)
+        {
+            return Result.Failure<Pagination<RecipeToReturnDto>>(result.Error);
+        }
+
+        var RecipesCount = await _mediator.Send(new GetRecipesCountQuery(spec));
+        var paginationResult = new Pagination<RecipeToReturnDto>(spec.PageSize, spec.PageIndex, RecipesCount.Data, result.Data);
+
+        return Result.Success(paginationResult);
     }
 
 }

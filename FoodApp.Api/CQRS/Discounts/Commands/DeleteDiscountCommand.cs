@@ -17,7 +17,7 @@ namespace FoodApp.Api.CQRS.Discounts.Commands
         public async override Task<Result<bool>> Handle(DeleteDiscountCommand request, CancellationToken cancellationToken)
         {
             var discountResult = await _mediator.Send(new GetDiscountByIdQuery(request.DiscountId));
-            var discount = discountResult.Data.Map<Discount>();
+            var discount = discountResult.Data;
 
             if (discount == null)
             {

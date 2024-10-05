@@ -1,9 +1,9 @@
 ﻿using Azure.Core;
 using FoodApp.Api.Abstraction;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.Roles.Queries;
 using FoodApp.Api.CQRS.UserRoles.Queries;
-using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;

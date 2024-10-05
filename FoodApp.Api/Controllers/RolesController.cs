@@ -1,7 +1,8 @@
 ﻿using FoodApp.Api.Abstraction;
 using FoodApp.Api.CQRS.Roles.Commands;
+using FoodApp.Api.CQRS.Roles.Queries;
 using FoodApp.Api.CQRS.UserRoles.Commands;
-using FoodApp.Api.CQRS.Users.Commands;
+using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.ViewModels;
 using MediatR;
@@ -36,5 +37,18 @@ namespace FoodApp.Api.Controllers
             var response = await _mediator.Send(new RemoveRoleFromUserCommand(userId, roleId));
             return response;
         }
+        [HttpDelete("RemoveRole/{roleId}")]
+        public async Task<Result<bool>> RemoveRole(int roleId)
+        {
+            var response = await _mediator.Send(new RemoveRoleCommand(roleId));
+            return response;
+        }
+        [HttpGet("GetAllRoles")]
+        public async Task<Result<List<Role>>> GetAllRoles()
+        {
+            var response = await _mediator.Send(new GetAllRolesQuery());
+            return response;
+        } 
+
     }
 }

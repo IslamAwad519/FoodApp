@@ -1,5 +1,5 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Users.Queries;
+using FoodApp.Api.CQRS.Account.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
@@ -45,7 +45,7 @@ namespace FoodApp.Api.CQRS.Users.Commands
 
             return Result.Success(true);
         }
-    
+
     }
 }
 

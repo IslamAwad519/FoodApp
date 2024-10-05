@@ -1,5 +1,6 @@
 ﻿using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Repository.Interface;
+using FoodApp.Api.Repository.Specification;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.Data.Context;
 using System.Linq.Expressions;
@@ -15,11 +16,29 @@ namespace FoodApp.Api.Repository.Repository
             _dBContext = dBContext;
         }
 
+        public async Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecification<T> Spec)
+        {
+            return await ApplySpecification(Spec).Where(x => !x.IsDeleted).ToListAsync();
+        }
+
+        public async Task<T?> GetByIdWithSpecAsync(ISpecification<T> Spec)
+        {
+            return await ApplySpecification(Spec).Where(x => !x.IsDeleted).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetCountWithSpecAsync(ISpecification<T> Spec)
+        {
+            return await ApplySpecification(Spec).Where(x => !x.IsDeleted).CountAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dBContext.Set<T>().Where(x => !x.IsDeleted).ToListAsync();
         }
-
+        public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dBContext.Set<T>().Where(x => !x.IsDeleted).FirstOrDefaultAsync();
+        }
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> expression)
         {
             var query = _dBContext.Set<T>().AsQueryable();
@@ -33,13 +52,16 @@ namespace FoodApp.Api.Repository.Repository
             var query = _dBContext.Set<T>().AsQueryable();
             query = query.Where(x => !x.IsDeleted);
             query = query.Where(expression);
-            return  query;
+            return query;
         }
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _dBContext.Set<T>().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == id);
         }
-
+        public async Task<int> GetCountAsync()
+        {
+            return await _dBContext.Set<T>().Where(x => !x.IsDeleted).CountAsync();
+        }
         public async Task AddAsync(T entity)
         {
             await _dBContext.Set<T>().AddAsync(entity);
@@ -63,27 +85,16 @@ namespace FoodApp.Api.Repository.Repository
             Update(entity);
         }
 
-        public async Task<int> GetCountAsync()
-        {
-            return await _dBContext.Set<T>().Where(x => !x.IsDeleted).CountAsync();
-        }
-
         public async Task<int> SaveChangesAsync()
         {
             return await _dBContext.SaveChangesAsync();
         }
-        public IQueryable<T> GetAll()
+        private IQueryable<T> ApplySpecification(ISpecification<T> Spec)
         {
-            IQueryable<T> query = _dBContext.Set<T>().Where(a => a.IsDeleted != true);
-            return query;
+            return SpecificationEvaluator<T>.GetQuery(_dBContext.Set<T>(), Spec);
         }
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate)
-        {
-            return GetAll().Where(predicate);
-        }
-        public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await GetAll(predicate).FirstOrDefaultAsync();
-        }
+
+
+ 
     }
 }
