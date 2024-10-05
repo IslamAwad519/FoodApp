@@ -9,6 +9,7 @@ public class Recipe : BaseEntity
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
-    public ICollection<RecipeDiscount> RecipeDiscounts { get; set; } = new List<RecipeDiscount>(); 
+    public ICollection<RecipeDiscount> RecipeDiscounts { get; set; } = new List<RecipeDiscount>();
+    public ICollection<FavouriteRecipe> FavouriteByUsers { get; set; } = new List<FavouriteRecipe>();
 
 }

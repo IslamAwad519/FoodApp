@@ -49,10 +49,14 @@ namespace FoodApp.Api.Errors
 
         public static readonly Error TokenIsRequired =
               new("Token Is Required", StatusCodes.Status400BadRequest);
-
+ 
 
         public static readonly Error NoLoggedInUserFound =
               new("There Is No Logged User", StatusCodes.Status400BadRequest);
+
+        public static readonly Error UserNotAuthenticated =
+              new("You are not authenticated", StatusCodes.Status400BadRequest);
+ 
     }
 
 }

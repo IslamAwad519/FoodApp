@@ -4,6 +4,8 @@ using FoodApp.Api.CQRS.Categories.Commands;
 using FoodApp.Api.CQRS.Categories.Queries;
 using FoodApp.Api.CQRS.Discounts.Commands;
 using FoodApp.Api.CQRS.Discounts.Queries;
+using FoodApp.Api.CQRS.FavouriteRecipes.Commands;
+using FoodApp.Api.CQRS.FavouriteRecipes.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
@@ -46,7 +48,7 @@ namespace FoodApp.Api.Helper
 
 
             CreateMap<CreateRoleCommand, Role>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.roleName)); ;
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.roleName)); 
 
             CreateMap<CreateRoleViewModel, CreateRoleCommand>();
             CreateMap<AssignRoleToUserViewModel, AddRoleToUserCommand>();
@@ -101,6 +103,11 @@ namespace FoodApp.Api.Helper
             CreateMap<CreateCategoryCommand, Category>();
             CreateMap<CategoryToReturnDto, Category>().ReverseMap();
             CreateMap<Recipe, RecipesNamesToReturnDto>();
+
+            //FavouriteRecipe
+            CreateMap<AddRecipeToFavouritesViewModel, AddRecipeToFavouritesCommand>();
+            CreateMap<AddRecipeToFavouritesCommand, FavouriteRecipe>().ReverseMap();
+            CreateMap<FavouriteRecipToReturnDto, FavouriteRecipe>().ReverseMap();
 
         }
     }

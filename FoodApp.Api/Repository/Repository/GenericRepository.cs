@@ -93,8 +93,12 @@ namespace FoodApp.Api.Repository.Repository
         {
             return SpecificationEvaluator<T>.GetQuery(_dBContext.Set<T>(), Spec);
         }
+        public async Task<List<T>> ListAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
 
 
- 
+
     }
 }

@@ -21,5 +21,6 @@ namespace FoodApp.Api.Repository.Interface
         Task<IEnumerable<T>> GetAllWithSpecAsync(ISpecification<T> Spec);
         Task<T?> GetByIdWithSpecAsync(ISpecification<T> Spec);
         Task<int> GetCountWithSpecAsync(ISpecification<T> Spec);
+        Task<List<T>> ListAsync(ISpecification<T> spec);
     }
 }
