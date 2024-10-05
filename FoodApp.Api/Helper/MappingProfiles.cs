@@ -7,6 +7,7 @@ using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
+using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.Helper.RecipeUrlResolve;
@@ -34,9 +35,12 @@ namespace FoodApp.Api.Helper
             CreateMap<ForgotPasswordViewModel, ForgotPasswordCommand>();
             CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
 
-            //Account
-
+            //user
             CreateMap<User, UserToReturnDto>();
+            CreateMap<UpdateUserProfileCommand, User>()
+                  .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<UpdateUserProfileViewModel, UpdateUserProfileCommand>();
 
             /***************  Role  ***************/
 

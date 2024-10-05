@@ -7,7 +7,7 @@ using FoodApp.Api.Repository.Interface;
 using MediatR;
 using ProjectManagementSystem.Helper;
 
-namespace FoodApp.Api.CQRS.Account.Commands
+namespace FoodApp.Api.CQRS.Users.Commands
 {
     public record ChangePasswordCommand(
     string Email,

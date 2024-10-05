@@ -59,13 +59,6 @@ namespace FoodApp.Api.Controllers
             return result;
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<Result<bool>> ChangePassword(ChangePasswordViewModel viewModel)
-        {
-            var command = viewModel.Map<ChangePasswordCommand>();
-            var response = await _mediator.Send(command);
-            return response;
-        }
 
         [HttpPost("ForgotPassword")]
         public async Task<Result<bool>> ForgotPassword(ForgotPasswordViewModel viewModel)
