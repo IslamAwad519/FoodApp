@@ -15,7 +15,6 @@ namespace ProjectManagementSystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
@@ -27,5 +26,10 @@ namespace ProjectManagementSystem.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Discount> discounts { get; set; }
         public DbSet<FavouriteRecipe> favouriteRecipes { get; set; }
+        public DbSet<OrderItem> orderItems { get; set; }
+        public DbSet<Order> orders { get; set; }
+        public DbSet<Invoice> invoices { get; set; }
+
+
     }
 }
