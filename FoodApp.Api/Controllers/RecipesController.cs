@@ -1,10 +1,8 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Categories.Queries;
 using FoodApp.Api.CQRS.FavouriteRecipes.Commands;
 using FoodApp.Api.CQRS.FavouriteRecipes.Queries;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Recipes.Queries;
-using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using FoodApp.Api.Helper;
@@ -18,7 +16,8 @@ namespace FoodApp.Api.Controllers;
 
 public class RecipesController : BaseController
 {
-    public RecipesController(ControllerParameters controllerParameters) : base(controllerParameters) { }
+
+    public RecipesController(ControllerParameters controllerParameters) : base(controllerParameters) {}
 
     //[Authorize]
     [HttpPost("AddRecipe")]
@@ -84,6 +83,7 @@ public class RecipesController : BaseController
     {
         var command = viewModel.Map<AddRecipeToFavouritesCommand>();
         var response = await _mediator.Send(command);
+
         return response;
     }
     [HttpDelete("RemoveRecipeFromFavourite/{RecipeId}")]

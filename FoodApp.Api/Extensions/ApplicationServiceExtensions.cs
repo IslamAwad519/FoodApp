@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManagementSystem.Data.Context;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -46,7 +48,7 @@ namespace FoodApp.Api.Extensions
             services.AddTransient<EmailSenderHelper>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
-
+            
             return services;
         }
 

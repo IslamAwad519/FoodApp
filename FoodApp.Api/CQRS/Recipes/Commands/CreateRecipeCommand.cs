@@ -1,12 +1,9 @@
 ﻿using FoodApp.Api.Abstraction;
-using FoodApp.Api.CQRS.Roles.Commands;
-using FoodApp.Api.CQRS.Roles.Queries;
 using FoodApp.Api.Data.Entities;
 using FoodApp.Api.DTOs;
 using FoodApp.Api.Errors;
 using MediatR;
 using ProjectManagementSystem.Helper;
-using System.Data;
 
 namespace FoodApp.Api.CQRS.Recipes.Commands;
 
@@ -19,15 +16,32 @@ public record CreateRecipeCommand(
 
 public class CreateRecipeCommandHandler : BaseRequestHandler<CreateRecipeCommand, Result<bool>>
 {
-    public CreateRecipeCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+    private readonly ILogger<CreateRecipeCommandHandler> _logger;
+
+    public CreateRecipeCommandHandler(
+        RequestParameters requestParameters,
+        ILogger<CreateRecipeCommandHandler> logger) : base(requestParameters)
+    {
+        _logger = logger;
+    }
 
     public override async Task<Result<bool>> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
     {
-        var recipe = request.Map<Recipe>();
+        try
+        {
+            var recipe = request.Map<Recipe>();
+            _logger.LogInformation("Mapped recipe object for {RecipeName}", request.Name);
 
-        await _unitOfWork.Repository<Recipe>().AddAsync(recipe);
-        await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Repository<Recipe>().AddAsync(recipe);
 
-        return Result.Success(true);
+            await _unitOfWork.SaveChangesAsync();
+          
+            return Result.Success(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while creating the recipe: {RecipeName}", request.Name);
+            return Result.Failure<bool>(RecipeErrors.RecipeNotCreated);
+        }
     }
 }

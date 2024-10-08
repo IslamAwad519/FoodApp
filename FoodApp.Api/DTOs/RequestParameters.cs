@@ -17,6 +17,7 @@ namespace FoodApp.Api.DTOs
             UserState = userState;
             UnitOfWork = unitOfWork;
             EmailSenderHelper = emailSenderHelper;
+         
         }
     }
 }

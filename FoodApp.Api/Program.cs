@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ProjectManagementSystem.Data.Context;
 using ProjectManagementSystem.Helper;
+using Serilog.Sinks.MSSqlServer;
+using Serilog;
+using Hangfire;
 
 internal class Program
 {
@@ -14,6 +17,31 @@ internal class Program
 
         builder.Services.AddApplicationService(builder.Configuration);
 
+        builder.Logging.ClearProviders();
+
+
+        var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+        Log.Logger = new LoggerConfiguration()
+              .ReadFrom.Configuration(configuration)
+              .Enrich.WithMachineName()
+              .Enrich.WithThreadId()
+              .WriteTo.Console()
+              .WriteTo.Seq("http://localhost:5341/")
+              .WriteTo.MSSqlServer(connectionString: configuration.GetConnectionString("DefaultConnection"),
+              sinkOptions: new MSSqlServerSinkOptions
+              {
+                  TableName = "Logs",
+                  AutoCreateSqlTable = true
+              }).CreateLogger();
+
+
+        builder.Host.UseSerilog();
+
+        builder.Services.AddHangfire(cfg =>
+                 cfg.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
+
+        builder.Services.AddHangfireServer();
         var app = builder.Build();
         {
             #region Update-Database
@@ -35,6 +63,8 @@ internal class Program
             }
 
             #endregion
+
+            app.UseHangfireDashboard("/hangfire");
 
             MapperHandler.mapper = app.Services.GetService<IMapper>();
             TokenGenerator.options = app.Services.GetService<IOptions<JwtOptions>>()!.Value;

@@ -42,7 +42,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.Discount", b =>
@@ -70,7 +70,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("discounts");
+                    b.ToTable("discounts", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.FavouriteRecipe", b =>
@@ -99,7 +99,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("favouriteRecipes");
+                    b.ToTable("favouriteRecipes", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.Invoice", b =>
@@ -126,7 +126,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("invoices");
+                    b.ToTable("invoices", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.Order", b =>
@@ -157,7 +157,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orders");
+                    b.ToTable("orders", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.OrderItem", b =>
@@ -190,7 +190,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("orderItems");
+                    b.ToTable("orderItems", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.Recipe", b =>
@@ -229,7 +229,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.RecipeDiscount", b =>
@@ -261,7 +261,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeDiscount");
+                    b.ToTable("RecipeDiscount", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.RefreshToken", b =>
@@ -298,7 +298,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.Role", b =>
@@ -324,7 +324,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("roles");
+                    b.ToTable("roles", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.User", b =>
@@ -378,7 +378,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.UserRole", b =>
@@ -407,7 +407,7 @@ namespace FoodApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("FoodApp.Api.Data.Entities.FavouriteRecipe", b =>
@@ -448,7 +448,7 @@ namespace FoodApp.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("FoodApp.Api.Data.Entities.Address", "ShppingAddress", b1 =>
+                    b.OwnsOne("FoodApp.Api.Data.Entities.Order.ShppingAddress#FoodApp.Api.Data.Entities.Address", "ShppingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
@@ -475,7 +475,7 @@ namespace FoodApp.Api.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("orders");
+                            b1.ToTable("orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
