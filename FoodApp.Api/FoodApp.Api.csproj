@@ -29,6 +29,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="7.0.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
@@ -38,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Order\Queries\" />
+    <Folder Include="CQRS\Orders\Queries\" />
     <Folder Include="Services\" />
     <Folder Include="wwwroot\Files\Images\" />
   </ItemGroup>

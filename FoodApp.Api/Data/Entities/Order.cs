@@ -2,7 +2,7 @@
 {
     public class Order : BaseEntity
     {
-        public OrderStatus status {  get; set; }
+        public OrderStatus status { get; set; } = OrderStatus.Pending;
         public decimal TotalPrice { get; set; }
         public List<OrderItem> OrderItems { get; set; }
         public Address ShppingAddress { get; set; }

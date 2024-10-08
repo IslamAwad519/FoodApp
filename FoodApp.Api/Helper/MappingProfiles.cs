@@ -7,12 +7,14 @@ using FoodApp.Api.CQRS.Discounts.Commands;
 using FoodApp.Api.CQRS.Discounts.Queries;
 using FoodApp.Api.CQRS.FavouriteRecipes.Commands;
 using FoodApp.Api.CQRS.FavouriteRecipes.Queries;
+using FoodApp.Api.CQRS.Orders.Command;
 using FoodApp.Api.CQRS.Recipes.Commands;
 using FoodApp.Api.CQRS.Roles.Commands;
 using FoodApp.Api.CQRS.UserRoles.Commands;
 using FoodApp.Api.CQRS.Users.Commands;
 using FoodApp.Api.CQRS.Users.Queries;
 using FoodApp.Api.Data.Entities;
+using FoodApp.Api.DTOs;
 using FoodApp.Api.Helper.RecipeUrlResolve;
 using FoodApp.Api.Response;
 using FoodApp.Api.ViewModels;
@@ -113,6 +115,18 @@ namespace FoodApp.Api.Helper
             CreateMap<AddRecipeToFavouritesCommand, FavouriteRecipe>().ReverseMap();
             CreateMap<FavouriteRecipToReturnDto, FavouriteRecipe>().ReverseMap();
 
+            //Order
+
+            CreateMap<Order, OrderToReturnDto>();
+            CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<AddressDto, Address>();
+            CreateMap<CreateOrderViewModel, CreateOrderCommand >();
+
+            CreateMap<CreateOrderViewModel, CreateOrderCommand>();
+        
+            CreateMap<OrderItemViewModel, OrderItemDto>();
+
+            CreateMap<AddressViewModel, AddressDto>();
         }
     }
 }
