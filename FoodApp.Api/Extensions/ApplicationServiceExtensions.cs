@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using FoodApp.Api.DTOs;
-using FoodApp.Api.Helper;
-using FoodApp.Api.Repository.Interface;
-using FoodApp.Api.Repository.Repository;
+using FoodApp.Api.VerticalSlicing.Common;
+using FoodApp.Api.VerticalSlicing.Data.Context;
+using FoodApp.Api.VerticalSlicing.Data.Repository.Interface;
+using FoodApp.Api.VerticalSlicing.Data.Repository.Repository;
+using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProjectManagementSystem.Data.Context;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Diagnostics;
@@ -47,8 +47,9 @@ namespace FoodApp.Api.Extensions
             services.AddScoped<ControllerParameters>();
             services.AddTransient<EmailSenderHelper>();
 
-            services.AddAutoMapper(typeof(MappingProfiles));
-            
+           // services.AddAutoMapper(typeof(MappingProfiles));
+           services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             return services;
         }
 

@@ -1,13 +1,13 @@
 using AutoMapper;
 using FoodApp.Api.Extensions;
-using FoodApp.Api.Helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using ProjectManagementSystem.Data.Context;
-using ProjectManagementSystem.Helper;
 using Serilog.Sinks.MSSqlServer;
 using Serilog;
 using Hangfire;
+using FoodApp.Api.VerticalSlicing.Common;
+using FoodApp.Api.VerticalSlicing.Data.Context;
+using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
 
 internal class Program
 {
