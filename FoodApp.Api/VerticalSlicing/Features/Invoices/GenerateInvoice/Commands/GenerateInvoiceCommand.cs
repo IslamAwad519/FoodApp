@@ -3,6 +3,8 @@ using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Queries;
 using FoodApp.Api.VerticalSlicing.Features.Orders;
 using MediatR;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
+using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
+using FoodApp.Api.VerticalSlicing.Features.Users.GetUserEmailByUserId.Query;
 
 namespace FoodApp.Api.VerticalSlicing.Features.Invoices.GenerateInvoice.Commands
 {
@@ -10,7 +12,12 @@ namespace FoodApp.Api.VerticalSlicing.Features.Invoices.GenerateInvoice.Commands
 
     public class GenerateInvoiceCommandHandler : BaseRequestHandler<CreateInvoiceCommand, Result<GenerateInvoiceResponse>>
     {
-        public GenerateInvoiceCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+        private readonly RabbitMQPublisherService _rabbitMQPublisherService;
+
+        public GenerateInvoiceCommandHandler(RequestParameters requestParameters, RabbitMQPublisherService rabbitMQPublisherService) : base(requestParameters)
+        {
+            _rabbitMQPublisherService = rabbitMQPublisherService;
+        }
 
         public override async Task<Result<GenerateInvoiceResponse>> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
         {
@@ -30,6 +37,15 @@ namespace FoodApp.Api.VerticalSlicing.Features.Invoices.GenerateInvoice.Commands
 
             await _unitOfWork.Repository<Invoice>().AddAsync(invoice);
             await _unitOfWork.SaveChangesAsync();
+            var emailResult = await _mediator.Send(new GetUserEmailByUserIdQuery(order.UserId));
+            var invoiceMessage = new InvoiceGeneratedMessage
+            {
+                OrderId = order.Id,
+                UserEmail = emailResult.Data,
+                TotalAmount = order.TotalPrice,
+                GeneratedAt = DateTime.UtcNow
+            };
+            _rabbitMQPublisherService.PublishInvoiceMessage(invoiceMessage);
 
             var invoiceToReturnDto = invoice.Map<GenerateInvoiceResponse>();
 

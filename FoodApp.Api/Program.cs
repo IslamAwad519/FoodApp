@@ -8,6 +8,7 @@ using Hangfire;
 using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Context;
 using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
+using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
 
 internal class Program
 {
@@ -42,6 +43,7 @@ internal class Program
                  cfg.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddHangfireServer();
+        //builder.Services.AddHostedService<RabbitMQConsumerService>();
         var app = builder.Build();
         {
             #region Update-Database
