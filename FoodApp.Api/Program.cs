@@ -43,7 +43,7 @@ internal class Program
                  cfg.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddHangfireServer();
-        //builder.Services.AddHostedService<RabbitMQConsumerService>();
+        builder.Services.AddHostedService<RabbitMQConsumerService>();
         var app = builder.Build();
         {
             #region Update-Database

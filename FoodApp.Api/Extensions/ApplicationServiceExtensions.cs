@@ -48,7 +48,7 @@ namespace FoodApp.Api.Extensions
             services.AddScoped<ControllerParameters>();
             services.AddTransient<EmailSenderHelper>();
             services.AddSingleton<RabbitMQPublisherService>();
-            services.AddSingleton<IHostedService, RabbitMQConsumerService>();
+          //  services.AddSingleton<IHostedService, RabbitMQConsumerService>();
 
             // services.AddAutoMapper(typeof(MappingProfiles));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

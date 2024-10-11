@@ -28,6 +28,29 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands
             }
 
             var order = orderResult.Data;
+
+            if (order.status == OrderStatus.Pending)
+            {
+                if (request.NewStatus != OrderStatus.Rejected && request.NewStatus != OrderStatus.Accepted)
+                {
+                    return Result.Failure<bool>(OrderErrors.OrderNotAcceptedOrRejectedYet);
+                }
+            }
+            else if (order.status == OrderStatus.Accepted)
+            { 
+                if (request.NewStatus != OrderStatus.InProgress &&
+                    request.NewStatus != OrderStatus.Completed &&
+                    request.NewStatus != OrderStatus.Delivered)
+                {
+                    return Result.Failure<bool>(OrderErrors.InvalidStatusUpdate);
+                }
+            }
+            else if (order.status == OrderStatus.Rejected || order.status == OrderStatus.Cancelled)
+            {
+                return Result.Failure<bool>(OrderErrors.UpdateStatusForInvalidOrder);
+            }
+
+
             order.status = request.NewStatus;
 
             _unitOfWork.Repository<Order>().Update(order);

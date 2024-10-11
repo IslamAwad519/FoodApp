@@ -7,11 +7,8 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "Pending")]
         Pending,
 
-        [EnumMember(Value = "InProgress")]
-        InProgress,
-
-        [EnumMember(Value = "Delivered")]
-        Delivered,
+        [EnumMember(Value = "Accepted")]
+        Accepted,
 
         [EnumMember(Value = "Rejected")]
         Rejected,
@@ -19,7 +16,15 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "Cancelled")]
         Cancelled,
 
+        [EnumMember(Value = "InProgress")]
+        InProgress,
+
+        [EnumMember(Value = "Delivered")]
+        Delivered,
+
         [EnumMember(Value = "Completed")]
-        Completed
+        Completed,
+
+
     }
 }

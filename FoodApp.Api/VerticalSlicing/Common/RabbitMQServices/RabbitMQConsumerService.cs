@@ -14,15 +14,12 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
 
         IConnection _connection;
         IModel _channel;
-        private readonly IServiceProvider _serviceProvider;
         private readonly EmailSenderHelper _emailSenderHelper;
 
-        public RabbitMQConsumerService(IServiceProvider serviceProvider, EmailSenderHelper emailSenderHelper)
+        public RabbitMQConsumerService(EmailSenderHelper emailSenderHelper)
         {
-
-            _serviceProvider = serviceProvider;
             _emailSenderHelper = emailSenderHelper;
-            var factory = new ConnectionFactory() { HostName = "localhost"};
+            var factory = new ConnectionFactory() { HostName = "localhost" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
         }
@@ -30,7 +27,7 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
         {
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += Consumer_Received;
-            _channel.BasicConsume(queue:"OrderStatus_Update_queue", autoAck: false, consumer: consumer);
+            _channel.BasicConsume(queue: "OrderStatus_Update_queue", autoAck: false, consumer: consumer);
             _channel.BasicConsume(queue: "InvoiceGenerated_queue", autoAck: false, consumer: consumer);
 
             return Task.CompletedTask;
@@ -69,7 +66,7 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
             }
             else
             {
-                _channel.BasicReject(e.DeliveryTag, requeue: false);  
+                _channel.BasicReject(e.DeliveryTag, requeue: false);
             }
         }
         public Task StopAsync(CancellationToken cancellationToken)

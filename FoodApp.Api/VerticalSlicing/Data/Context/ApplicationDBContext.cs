@@ -9,8 +9,7 @@ namespace FoodApp.Api.VerticalSlicing.Data.Context
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)
         {
-            // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
+            // ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;  
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +28,9 @@ namespace FoodApp.Api.VerticalSlicing.Data.Context
         public DbSet<OrderItem> orderItems { get; set; }
         public DbSet<Order> orders { get; set; }
         public DbSet<Invoice> invoices { get; set; }
+        public DbSet<RecipeRating> recipeRatings { get; set; }
+
+        
 
 
     }

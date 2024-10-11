@@ -7,6 +7,8 @@ using FoodApp.Api.VerticalSlicing.Features.Recipes.AddRecipeToFavourite.Commands
 using FoodApp.Api.VerticalSlicing.Features.Recipes.DeleteRecipe.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.ListRecipes;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.ListRecipes.Queries;
+using FoodApp.Api.VerticalSlicing.Features.Recipes.RateRecipe;
+using FoodApp.Api.VerticalSlicing.Features.Recipes.RateRecipe.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.RemoveRecipeFromFavourite.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.UpdateRecipe;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.UpdateRecipe.Commands;
@@ -28,6 +30,13 @@ public class RecipesController : BaseController
         var command = request.Map<CreateRecipeCommand>();
         var response = await _mediator.Send(command);
         return response;
+    }
+    [HttpPost("RateReipe")]
+    public async Task<Result> RateRecipe(RateRecipeRequest request)
+    {
+        var commad = request.Map<RateRecipeCommand>();
+        var result = await _mediator.Send(commad);
+        return result;
     }
 
     //[Authorize]
