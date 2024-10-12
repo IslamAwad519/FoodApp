@@ -1,9 +1,9 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
+using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodApp.Api.VerticalSlicing.Features.Orders
@@ -28,5 +28,20 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
             return result;
         }
 
+        [HttpGet("accept/{orderId}")]
+        public async Task<Result> AcceptOrder(int orderId)
+        {
+            var result = await _mediator.Send(new UpdateOrderStatusCommand(orderId, OrderStatus.Accepted));
+
+            return result;
+        }
+
+        [HttpGet("reject/{orderId}")]
+        public async Task<Result> RejectOrder(int orderId)
+        {
+            var result = await _mediator.Send(new UpdateOrderStatusCommand(orderId, OrderStatus.Rejected));
+
+            return result;
+        }
     }
 }

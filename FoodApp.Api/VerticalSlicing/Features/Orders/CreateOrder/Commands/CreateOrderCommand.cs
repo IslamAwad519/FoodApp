@@ -73,7 +73,14 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands
                 UserId = order.UserId,
                 UserEmail = "projectsmaster22@gmail.com",
                 TotalPrice = order.TotalPrice,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                OrderItems = orderItems.Select(oi => new OrderItemDetail
+                {
+                    RecipeId = oi.RecipeId,
+                    RecipeName = oi.RecipeName,
+                    Quantity = oi.Quantity
+                }).ToList()
+
             };
 
             _rabbitMQPublisherService.PublishOrderCreatedMessage(orderCreatedMessage);

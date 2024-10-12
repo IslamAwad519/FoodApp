@@ -73,9 +73,24 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
                 if (orderCreatedMessage != null)
                 {
                     string subject = "Order Created";
-                    string body = $"The order with ID {orderCreatedMessage.OrderId} has been created. " +
-                                  $"Total amount: {orderCreatedMessage.TotalPrice}. " +
-                                  $"Created at: {orderCreatedMessage.CreatedAt}.";
+
+                    string baseUrl = "https://localhost:7146/api/Order";
+                    string acceptUrl = $"{baseUrl}/accept/{orderCreatedMessage.OrderId}";
+                    string rejectUrl = $"{baseUrl}/reject/{orderCreatedMessage.OrderId}";
+
+                    string body = $"The order with ID {orderCreatedMessage.OrderId} has been created.<br/>" +
+                                  $"Total amount: {orderCreatedMessage.TotalPrice:C}.<br/>" +
+                                  $"Created at: {orderCreatedMessage.CreatedAt}.<br/><br/>" +
+                                  $"Order details:<br/>";
+
+                    foreach (var item in orderCreatedMessage.OrderItems)
+                    {
+                        body += $"Recipe ID: {item.RecipeId}, Recipe Name: {item.RecipeName}, Quantity: {item.Quantity}<br/>";
+                    }
+
+                    body += $"<br/>Please review the order and take action:<br/>" +
+                            $"<a href=\"{acceptUrl}\">Accept Order</a><br/>" +
+                            $"<a href=\"{rejectUrl}\">Reject Order</a>";
 
                     await _emailSenderHelper.SendEmailAsync(orderCreatedMessage.UserEmail, subject, body);
                 }
