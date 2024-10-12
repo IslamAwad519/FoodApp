@@ -1,5 +1,6 @@
 ﻿
 using FoodApp.Api.VerticalSlicing.Features.Invoices.GenerateInvoice;
+using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
 using MediatR;
 using Newtonsoft.Json;
@@ -29,6 +30,7 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
             consumer.Received += Consumer_Received;
             _channel.BasicConsume(queue: "OrderStatus_Update_queue", autoAck: false, consumer: consumer);
             _channel.BasicConsume(queue: "InvoiceGenerated_queue", autoAck: false, consumer: consumer);
+            _channel.BasicConsume(queue: "OrderCreated_queue", autoAck: false, consumer: consumer);
 
             return Task.CompletedTask;
         }
@@ -63,6 +65,22 @@ namespace FoodApp.Api.VerticalSlicing.Common.RabbitMQServices
                     await _emailSenderHelper.SendEmailAsync(orderStatusUpdate.UserEmail, subject, body);
                     _channel.BasicAck(e.DeliveryTag, false);
                 }
+            }
+            else if (routingKey == "key3")
+            {
+                var orderCreatedMessage = JsonConvert.DeserializeObject<OrderCreatedMessage>(messageBody);
+
+                if (orderCreatedMessage != null)
+                {
+                    string subject = "Order Created";
+                    string body = $"The order with ID {orderCreatedMessage.OrderId} has been created. " +
+                                  $"Total amount: {orderCreatedMessage.TotalPrice}. " +
+                                  $"Created at: {orderCreatedMessage.CreatedAt}.";
+
+                    await _emailSenderHelper.SendEmailAsync(orderCreatedMessage.UserEmail, subject, body);
+                }
+
+                _channel.BasicAck(e.DeliveryTag, false);
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
+using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Account;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.DTOs;
@@ -11,7 +12,12 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands
 
     public class CreateOrderCommandHandler : BaseRequestHandler<CreateOrderCommand, Result<CreateOrderResponse>>
     {
-        public CreateOrderCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
+        private readonly RabbitMQPublisherService _rabbitMQPublisherService;
+
+        public CreateOrderCommandHandler(RequestParameters requestParameters,RabbitMQPublisherService rabbitMQPublisherService) : base(requestParameters)
+        {
+            _rabbitMQPublisherService = rabbitMQPublisherService;
+        }
         public override async Task<Result<CreateOrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
 
@@ -61,6 +67,16 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands
             await _unitOfWork.SaveChangesAsync();
 
             var mappedOrder = order.Map<CreateOrderResponse>();
+            var orderCreatedMessage = new OrderCreatedMessage
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                UserEmail = "projectsmaster22@gmail.com",
+                TotalPrice = order.TotalPrice,
+                CreatedAt = DateTime.Now
+            };
+
+            _rabbitMQPublisherService.PublishOrderCreatedMessage(orderCreatedMessage);
 
             return Result.Success(mappedOrder);
         }
