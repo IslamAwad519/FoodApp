@@ -50,9 +50,7 @@ internal class Program
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
-
             var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
-
             try
             {
                 var dbcontext = services.GetRequiredService<ApplicationDBContext>();
@@ -63,7 +61,6 @@ internal class Program
                 var Logger = LoggerFactory.CreateLogger<Program>();
                 Logger.LogError(ex, "An error occured during updating database");
             }
-
             #endregion
 
             app.UseHangfireDashboard("/hangfire");

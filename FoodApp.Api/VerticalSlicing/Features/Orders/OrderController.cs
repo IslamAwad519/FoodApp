@@ -1,5 +1,6 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
+using FoodApp.Api.VerticalSlicing.Features.Orders.CancelOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
@@ -40,6 +41,14 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
         public async Task<Result> RejectOrder(int orderId)
         {
             var result = await _mediator.Send(new UpdateOrderStatusCommand(orderId, OrderStatus.Rejected));
+
+            return result;
+        }
+
+        [HttpPost("cancel/{orderId}")]
+        public async Task<Result> CancelOrder(int orderId)
+        {
+            var result = await _mediator.Send(new CancelOrderCommand(orderId));
 
             return result;
         }

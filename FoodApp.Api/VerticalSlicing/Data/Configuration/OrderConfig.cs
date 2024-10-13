@@ -14,8 +14,8 @@ namespace FoodApp.Api.VerticalSlicing.Data.Configuration
                     status => (OrderStatus)Enum.Parse(typeof(OrderStatus), status)
                );
 
-            builder.OwnsOne(order => order.ShppingAddress,
-                         shippingAddress => shippingAddress.WithOwner());
+            //builder.OwnsOne(order => order.ShppingAddress,
+            //             shippingAddress => shippingAddress.WithOwner());
 
             builder.Property(o => o.TotalPrice)
                 .HasColumnType("decimal(12,2)");

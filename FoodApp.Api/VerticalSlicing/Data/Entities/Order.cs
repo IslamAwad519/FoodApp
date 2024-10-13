@@ -5,7 +5,8 @@
         public OrderStatus status { get; set; } = OrderStatus.Pending;
         public decimal TotalPrice { get; set; }
         public List<OrderItem> OrderItems { get; set; }
-        public Address ShppingAddress { get; set; }
+        public Address ShippingAddress { get; set; }
+        public int ShippingAddressId { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
 
