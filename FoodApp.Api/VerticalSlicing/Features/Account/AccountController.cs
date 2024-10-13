@@ -29,21 +29,21 @@ namespace FoodApp.Api.VerticalSlicing.Features.Account
             return result;
 
         }
+
         [HttpPost("VerifyAccount")]
         public async Task<Result<bool>> Verify(VerifyAccountRequest request)
         {
             var command = request.Map<VerifyOTPCommand>();
             var result = await _mediator.Send(command);
             return result;
-
         }
+
         [HttpPost("ResendVerificationCode")]
         public async Task<Result<bool>> ResendVerificationCode(ResendVerificationCodeRequest requset)
         {
             var command = requset.Map<SendVerificationOTP>();
             var result = await _mediator.Send(command);
             return result;
-
         }
 
         [HttpPost("Login")]
@@ -92,6 +92,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Account
 
             return response;
         }
+
 
         [HttpPost("ResetPassword")]
         public async Task<Result<bool>> ResetPassword(ResetPasswordRequest request)

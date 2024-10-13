@@ -16,4 +16,7 @@ public class RecipeErrors
 
     public static readonly Error FavouriteRecipeAlreadyExists =
         new("FavouriteRecipe Already Exists", StatusCodes.Status409Conflict);
+
+    public static readonly Error RecipeAlreadyRated =
+        new("FavouriteRecipe Already Exists", StatusCodes.Status409Conflict);
 }

@@ -11,5 +11,6 @@ public class Recipe : BaseEntity
 
     public ICollection<RecipeDiscount> RecipeDiscounts { get; set; } = new List<RecipeDiscount>();
     public ICollection<FavouriteRecipe> FavouriteByUsers { get; set; } = new List<FavouriteRecipe>();
+    public ICollection<RecipeRating> RecipeRatings { get; set; } = new List<RecipeRating>();
 
 }
