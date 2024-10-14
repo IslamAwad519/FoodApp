@@ -4,6 +4,7 @@ using FoodApp.Api.VerticalSlicing.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodApp.Api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241014000112_DeliveryManTables")]
+    partial class DeliveryManTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,50 +24,6 @@ namespace FoodApp.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("FoodApp.Api.VerticalSlicing.Data.Entities.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Address");
-                });
 
             modelBuilder.Entity("FoodApp.Api.VerticalSlicing.Data.Entities.Category", b =>
                 {
@@ -220,7 +179,6 @@ namespace FoodApp.Api.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ShippingAddressId");
                     b.Property<int?>("StatusTrip")
                         .HasColumnType("int");
 
@@ -236,7 +194,6 @@ namespace FoodApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShippingAddressId");
                     b.HasIndex("DeliveryManId");
 
                     b.HasIndex("UserId");
@@ -537,17 +494,6 @@ namespace FoodApp.Api.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("FoodApp.Api.VerticalSlicing.Data.Entities.Address", b =>
-                {
-                    b.HasOne("FoodApp.Api.VerticalSlicing.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FoodApp.Api.VerticalSlicing.Data.Entities.FavouriteRecipe", b =>
                 {
                     b.HasOne("FoodApp.Api.VerticalSlicing.Data.Entities.Recipe", "Recipe")
@@ -580,9 +526,6 @@ namespace FoodApp.Api.Migrations
 
             modelBuilder.Entity("FoodApp.Api.VerticalSlicing.Data.Entities.Order", b =>
                 {
-                    b.HasOne("FoodApp.Api.VerticalSlicing.Data.Entities.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressId");
                     b.HasOne("FoodApp.Api.VerticalSlicing.Data.Entities.DeliveryMan", "DeliveryMan")
                         .WithMany("AssignedOrders")
                         .HasForeignKey("DeliveryManId")
@@ -595,10 +538,44 @@ namespace FoodApp.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ShippingAddress");
+                    b.OwnsOne("FoodApp.Api.VerticalSlicing.Data.Entities.Address", "ShppingAddress", b1 =>
+                        {
+                            b1.Property<int>("OrderId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("OrderId");
+
+                            b1.ToTable("orders");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
 
                     b.Navigation("DeliveryMan");
-                    
+
+                    b.Navigation("ShppingAddress")
+                        .IsRequired();
+
                     b.Navigation("User");
                 });
 

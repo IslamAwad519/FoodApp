@@ -22,6 +22,12 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
 
         public static readonly Error OrderCanNotBeCancelled =
             new("Order can not be cancelled", StatusCodes.Status400BadRequest);
+        public static readonly Error UnAvailableDeliveryMAN =
+            new("the delivery Man is not Available", StatusCodes.Status400BadRequest);
+
+        public static readonly Error ExceedOrdersNumber =
+           new("You can't assign more than 5 orders to deliverMan at a time", StatusCodes.Status400BadRequest);
+
 
         public static readonly Error ShippingAddressRequired =
             new("Shipping Address Required", StatusCodes.Status400BadRequest);

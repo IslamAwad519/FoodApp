@@ -1,6 +1,8 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CancelOrder.Commands;
+using FoodApp.Api.VerticalSlicing.Features.Orders.AssignOrdersToDeliveryMan;
+using FoodApp.Api.VerticalSlicing.Features.Orders.AssignOrdersToDeliveryMan.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
@@ -49,7 +51,14 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
         public async Task<Result> CancelOrder(int orderId)
         {
             var result = await _mediator.Send(new CancelOrderCommand(orderId));
+            return result;
 
+        }
+        [HttpPost("AssignOrdersToDeliveryMan")]
+        public async Task<Result> AssignOrderToDeliveryMan(AssignOrdersToDeliveryManRequest request)
+        {
+            var command = request.Map<AssignOrdersToDeliveryManCommand>();
+            var result = await _mediator.Send(command);
             return result;
         }
     }

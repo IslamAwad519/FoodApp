@@ -13,6 +13,11 @@ namespace FoodApp.Api.VerticalSlicing.Data.Configuration
                     status => status.ToString(),
                     status => (OrderStatus)Enum.Parse(typeof(OrderStatus), status)
                );
+            //builder.Property(o => o.StatusTrip).HasConversion
+            //   (
+            //       StatusTrip => StatusTrip.ToString(),
+            //       StatusTrip => (OrderStatusTrip)Enum.Parse(typeof(OrderStatusTrip), StatusTrip)
+            //  );
 
             //builder.OwnsOne(order => order.ShppingAddress,
             //             shippingAddress => shippingAddress.WithOwner());

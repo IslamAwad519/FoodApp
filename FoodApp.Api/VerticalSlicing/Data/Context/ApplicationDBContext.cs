@@ -29,6 +29,7 @@ namespace FoodApp.Api.VerticalSlicing.Data.Context
         public DbSet<Order> orders { get; set; }
         public DbSet<Invoice> invoices { get; set; }
         public DbSet<RecipeRating> recipeRatings { get; set; }
+        public DbSet<DeliveryMan> DeliveryMan { get; set;}
 
         
 
