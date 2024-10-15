@@ -24,7 +24,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.CancelOrder.Commands
             }
 
             var order = orderResult.Data;
-            if(order.status == OrderStatus.Completed || order.status == OrderStatus.Cancelled || order.status == OrderStatus.Rejected || order.status == OrderStatus.OnTrip)
+            if(order.status == OrderStatus.Completed || order.status == OrderStatus.Cancelled || order.status == OrderStatus.Rejected || order.status == OrderStatus.Ready)
             {
                 return Result.Failure(OrderErrors.OrderCanNotBeCancelled);
             }

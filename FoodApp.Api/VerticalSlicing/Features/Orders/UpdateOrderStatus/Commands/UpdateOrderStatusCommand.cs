@@ -36,7 +36,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands
             { 
                 if (request.NewStatus != OrderStatus.InProgress &&
                     request.NewStatus != OrderStatus.Completed &&
-                    request.NewStatus != OrderStatus.OnTrip)
+                    request.NewStatus != OrderStatus.Ready)
                 {
                     return Result.Failure<bool>(OrderErrors.InvalidStatusUpdate);
                 }

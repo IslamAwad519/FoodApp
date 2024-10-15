@@ -33,7 +33,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.AssignOrdersToDeliveryMan.
                 }
                 Order order = orderResult.Data;
                 order.DeliveryManId = deliveryMan.Id;
-                order.status = OrderStatus.OnTrip;
+                order.status = OrderStatus.Ready;
                 order.StatusTrip = OrderStatusTrip.OnTrip;
 
                 _unitOfWork.Repository<Order>().Update(order);

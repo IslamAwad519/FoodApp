@@ -40,5 +40,8 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
 
         public readonly Error NoShippingAddressFound =
               new("No Shipping Address Found for this user", StatusCodes.Status400BadRequest);
+
+        public static readonly Error DeniedAction =
+             new("Incorrect Update Status", StatusCodes.Status400BadRequest);
     }
 }

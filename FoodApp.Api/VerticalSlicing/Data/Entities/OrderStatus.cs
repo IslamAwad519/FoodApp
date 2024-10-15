@@ -10,9 +10,6 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "Accepted")]
         Accepted,
 
-        [EnumMember(Value = "Ready")]
-        Ready,
-
         [EnumMember(Value = "Rejected")]
         Rejected,
 
@@ -22,8 +19,9 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "InProgress")]
         InProgress,
 
-        [EnumMember(Value="OnTrip")]
-        OnTrip,
+        [EnumMember(Value = "Ready")]
+        Ready,
+
 
         [EnumMember(Value = "Completed")]
         Completed,
