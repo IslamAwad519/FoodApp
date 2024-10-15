@@ -50,7 +50,7 @@ internal class Program
             cfg.AddConsumers(typeof(Program).Assembly);
             cfg.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("http://localhost:5341/");
+                cfg.Host("amqp://localhost:5672");
                 cfg.ConfigureEndpoints(context);
             });
         });
