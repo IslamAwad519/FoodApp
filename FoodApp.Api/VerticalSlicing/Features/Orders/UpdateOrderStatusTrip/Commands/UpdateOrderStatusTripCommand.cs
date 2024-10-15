@@ -1,4 +1,5 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
+using FoodApp.Api.VerticalSlicing.Common.MassTransit;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Account;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
@@ -27,7 +28,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Comm
                 return Result.Failure<bool>(UserErrors.UserNotAuthenticated);
             }
 
-            var orderResult = await _mediator.Send(new GetOrderByIdQuery(request.OrderId));
+            var orderResult = await _mediator.Send(new GetOrderWithUserByIdQuery(request.OrderId));
             if (!orderResult.IsSuccess)
             {
                 return Result.Failure<bool>(OrderErrors.OrderNotFound);
@@ -79,12 +80,18 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Comm
             _unitOfWork.Repository<Order>().Update(order);
             await _unitOfWork.SaveChangesAsync();
 
-            await _publishEndpoint.Publish<IOrderStatusTripChangedMessage>(new OrderStatusTripChangedMessage
+            await _publishEndpoint.Publish<IOrderStatusTripChangedCustomerMessage>(new OrderStatusTripChangedCustomerMessage
+            {
+                OrderId = order.Id,
+                NewStatusTrip = request.orderStatusTrip,
+                UserEmail = order.User.Email
+            });
+            await _publishEndpoint.Publish<IOrderStatusTripChangedSystemMessage>(new OrderStatusTripChangedSystemMessage
             {
                 OrderId = order.Id,
                 NewStatusTrip = request.orderStatusTrip,
                 ChangeTime = DateTime.UtcNow,
-                UserEmail = order.User.Email
+                UserEmail = "projectsmaster22@gmail.com"
             });
             return Result.Success(true);
         }

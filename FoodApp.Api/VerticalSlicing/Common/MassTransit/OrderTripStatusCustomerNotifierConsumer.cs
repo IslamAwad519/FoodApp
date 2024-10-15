@@ -1,9 +1,8 @@
-﻿using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip;
-using MassTransit;
+﻿using MassTransit;
 
 namespace FoodApp.Api.VerticalSlicing.Common.MassTransit
 {
-    public class OrderTripStatusCustomerNotifierConsumer : IConsumer<IOrderStatusTripChangedMessage>
+    public class OrderTripStatusCustomerNotifierConsumer : IConsumer<IOrderStatusTripChangedCustomerMessage>
     {
      
             private readonly EmailSenderHelper _emailSenderHelper;
@@ -13,7 +12,7 @@ namespace FoodApp.Api.VerticalSlicing.Common.MassTransit
             _emailSenderHelper = emailSenderHelper;
         }
 
-        public async Task Consume(ConsumeContext<IOrderStatusTripChangedMessage> context)
+        public async Task Consume(ConsumeContext<IOrderStatusTripChangedCustomerMessage> context)
         {
             var message = context.Message;
 

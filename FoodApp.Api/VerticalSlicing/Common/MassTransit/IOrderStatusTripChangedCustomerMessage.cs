@@ -1,12 +1,11 @@
 ﻿using FoodApp.Api.VerticalSlicing.Data.Entities;
 
-namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip
+namespace FoodApp.Api.VerticalSlicing.Common.MassTransit
 {
-    public interface IOrderStatusTripChangedMessage
+    public interface IOrderStatusTripChangedCustomerMessage
     {
         int OrderId { get; }
         OrderStatusTrip NewStatusTrip { get; }
-        DateTime ChangeTime { get; }
         string UserEmail { get; }
     }
 }
