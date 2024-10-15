@@ -9,6 +9,7 @@ using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Context;
 using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
 using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
+using MassTransit;
 
 internal class Program
 {
@@ -19,7 +20,6 @@ internal class Program
         builder.Services.AddApplicationService(builder.Configuration);
 
         builder.Logging.ClearProviders();
-
 
         var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
@@ -44,6 +44,17 @@ internal class Program
 
         builder.Services.AddHangfireServer();
         builder.Services.AddHostedService<RabbitMQConsumerService>();
+
+        builder.Services.AddMassTransit(cfg =>
+        {
+            cfg.AddConsumers(typeof(Program).Assembly);
+            cfg.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("http://localhost:5341/");
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
         var app = builder.Build();
         {
             #region Update-Database

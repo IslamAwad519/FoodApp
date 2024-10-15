@@ -22,7 +22,6 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "Ready")]
         Ready,
 
-
         [EnumMember(Value = "Completed")]
         Completed,
 

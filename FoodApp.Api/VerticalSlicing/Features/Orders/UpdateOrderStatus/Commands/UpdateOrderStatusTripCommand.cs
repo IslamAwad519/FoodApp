@@ -23,7 +23,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands
                 return Result.Failure<bool>(OrderErrors.OrderNotFound);
             }
             var order = orderResult.Data;
-            if(order.StatusTrip==OrderStatusTrip.Delivered)
+            if(order.StatusTrip == OrderStatusTrip.Delivered)
             {
                 return Result.Failure<bool>(OrderErrors.DeniedAction);
             }
