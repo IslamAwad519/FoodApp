@@ -43,5 +43,8 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
 
         public static readonly Error DeniedAction =
              new("Incorrect Update Status", StatusCodes.Status400BadRequest);
+
+        public static readonly Error NotFoundDeliveryMan =
+             new("You are not authorized to do this action", StatusCodes.Status400BadRequest);
     }
 }

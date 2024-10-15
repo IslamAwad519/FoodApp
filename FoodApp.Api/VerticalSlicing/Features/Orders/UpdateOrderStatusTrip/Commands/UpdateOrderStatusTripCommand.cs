@@ -3,6 +3,7 @@ using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Account;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Queries;
+using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Queries;
 using MassTransit;
 using MediatR;
 
@@ -20,6 +21,12 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Comm
 
         public override async Task<Result<bool>> Handle(UpdateOrderStatusTripCommand request, CancellationToken cancellationToken)
         {
+            var userId = _userState.ID;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Result.Failure<bool>(UserErrors.UserNotAuthenticated);
+            }
+
             var orderResult = await _mediator.Send(new GetOrderByIdQuery(request.OrderId));
             if (!orderResult.IsSuccess)
             {
@@ -29,6 +36,20 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Comm
             if (order.StatusTrip == OrderStatusTrip.Delivered)
             {
                 return Result.Failure<bool>(OrderErrors.DeniedAction);
+            }
+            var previousOrderResult = await _mediator.Send(new GetOrdersByDeliveryManIdQuery(int.Parse(userId)));
+            if (previousOrderResult.IsSuccess)
+            {
+                var previousOrders = previousOrderResult.Data;
+                foreach (var prevOrder in previousOrders)
+                {
+                    if (prevOrder.StatusTrip != OrderStatusTrip.Delivered && prevOrder.Id !=order.Id)
+                    {
+                        prevOrder.StatusTrip = OrderStatusTrip.OnTrip;
+                        _unitOfWork.Repository<Order>().Update(prevOrder);
+                    }
+                }
+
             }
             switch (request.orderStatusTrip)
             {

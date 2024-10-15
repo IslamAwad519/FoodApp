@@ -8,6 +8,8 @@ using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands;
 using Microsoft.AspNetCore.Mvc;
+using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Commands;
+using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip;
 
 namespace FoodApp.Api.VerticalSlicing.Features.Orders
 {
@@ -58,6 +60,13 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
         public async Task<Result> AssignOrderToDeliveryMan(AssignOrdersToDeliveryManRequest request)
         {
             var command = request.Map<AssignOrdersToDeliveryManCommand>();
+            var result = await _mediator.Send(command);
+            return result;
+        }
+        [HttpPut("UpdateOrderTripStatus")]
+        public async Task<Result<bool>> UpdateOrderTripStatus(UpdateOrderStatusTripRequest request)
+        {
+            var command = request.Map<UpdateOrderStatusTripCommand>();
             var result = await _mediator.Send(command);
             return result;
         }
