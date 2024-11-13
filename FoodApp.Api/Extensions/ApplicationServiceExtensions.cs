@@ -6,6 +6,7 @@ using FoodApp.Api.VerticalSlicing.Data.Context;
 using FoodApp.Api.VerticalSlicing.Data.Repository.Interface;
 using FoodApp.Api.VerticalSlicing.Data.Repository.Repository;
 using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
+using FoodApp.Api.VerticalSlicing.Features.Common.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -48,7 +49,7 @@ namespace FoodApp.Api.Extensions
             services.AddScoped<ControllerParameters>();
             services.AddTransient<EmailSenderHelper>();
             services.AddSingleton<RabbitMQPublisherService>();
-          //  services.AddSingleton<IHostedService, RabbitMQConsumerService>();
+          services.AddSingleton<IHostedService, RabbitMQConsumerService>();
 
             // services.AddAutoMapper(typeof(MappingProfiles));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -71,6 +72,8 @@ namespace FoodApp.Api.Extensions
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food-Management-System-API", Version = "v1" });
+                
+                c.SchemaFilter<EnumSchemaFilter>();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

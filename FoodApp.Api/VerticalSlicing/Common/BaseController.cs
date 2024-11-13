@@ -16,12 +16,11 @@ namespace FoodApp.Api.VerticalSlicing.Common
             _mediator = controllerParameters.Mediator;
             _userState = controllerParameters.UserState;
 
-            var loggedUser = new HttpContextAccessor().HttpContext.User;
+            var loggedUser = new HttpContextAccessor().HttpContext.User!;
 
             _userState.Role = loggedUser.FindFirst("RoleID")?.Value ?? string.Empty;
             _userState.ID = loggedUser.FindFirst("UserId")?.Value ?? string.Empty;
             _userState.Name = loggedUser.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-
 
         }
     }

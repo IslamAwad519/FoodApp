@@ -21,7 +21,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
             return result;
         }
         [HttpPost("UpdateOrderStatus")]
-        public async Task<Result<bool>> UpdateOrderStatus(UpdateOrderStatusRequest request)
+        public async Task<Result<bool>> UpdateOrderStatus([FromForm]UpdateOrderStatusRequest request)
         {
             var command = request.Map<UpdateOrderStatusCommand>();
             var result = await _mediator.Send(command);
