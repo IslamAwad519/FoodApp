@@ -19,12 +19,26 @@ namespace FoodApp.Api.VerticalSlicing.Data.Entities
         [EnumMember(Value = "InProgress")]
         InProgress,
 
-        [EnumMember(Value = "Delivered")]
-        Delivered,
+        [EnumMember(Value = "Ready")]
+        Ready,
 
         [EnumMember(Value = "Completed")]
         Completed,
 
 
+    }
+    public enum OrderStatusTrip
+    {
+        [EnumMember(Value = "OnTrip")]
+        OnTrip,
+
+        [EnumMember(Value = "OnMyWayToCustomer")]
+        OnMyWayToCustomer,
+
+        [EnumMember(Value = "ArrivedToCustomer")]
+        ArrivedToCustomer,
+
+        [EnumMember(Value = "Delivered")]
+        Delivered,
     }
 }

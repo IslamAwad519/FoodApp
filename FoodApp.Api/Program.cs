@@ -9,6 +9,7 @@ using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Context;
 using FoodApp.Api.VerticalSlicing.Features.Account.Common.Helper;
 using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
+using MassTransit;
 
 internal class Program
 {
@@ -19,7 +20,6 @@ internal class Program
         builder.Services.AddApplicationService(builder.Configuration);
 
         builder.Logging.ClearProviders();
-
 
         var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
@@ -43,8 +43,17 @@ internal class Program
                  cfg.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
 
         builder.Services.AddHangfireServer();
+        builder.Services.AddHostedService<RabbitMQConsumerService>();
 
-        //builder.Services.AddHostedService<RabbitMQConsumerService>();
+        builder.Services.AddMassTransit(cfg =>
+        {
+            cfg.AddConsumers(typeof(Program).Assembly);
+            cfg.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("amqp://localhost:5672");
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         var app = builder.Build();
         {
@@ -52,9 +61,7 @@ internal class Program
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
-
             var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
-
             try
             {
                 var dbcontext = services.GetRequiredService<ApplicationDBContext>();
@@ -65,7 +72,6 @@ internal class Program
                 var Logger = LoggerFactory.CreateLogger<Program>();
                 Logger.LogError(ex, "An error occured during updating database");
             }
-
             #endregion
 
             app.UseHangfireDashboard("/hangfire");

@@ -1,10 +1,15 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
+using FoodApp.Api.VerticalSlicing.Features.Orders.CancelOrder.Commands;
+using FoodApp.Api.VerticalSlicing.Features.Orders.AssignOrdersToDeliveryMan;
+using FoodApp.Api.VerticalSlicing.Features.Orders.AssignOrdersToDeliveryMan.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder;
 using FoodApp.Api.VerticalSlicing.Features.Orders.CreateOrder.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus;
 using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands;
 using Microsoft.AspNetCore.Mvc;
+using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip.Commands;
+using FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatusTrip;
 
 namespace FoodApp.Api.VerticalSlicing.Features.Orders
 {
@@ -41,6 +46,28 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders
         {
             var result = await _mediator.Send(new UpdateOrderStatusCommand(orderId, OrderStatus.Rejected));
 
+            return result;
+        }
+
+        [HttpPost("cancel/{orderId}")]
+        public async Task<Result> CancelOrder(int orderId)
+        {
+            var result = await _mediator.Send(new CancelOrderCommand(orderId));
+            return result;
+
+        }
+        [HttpPost("AssignOrdersToDeliveryMan")]
+        public async Task<Result> AssignOrderToDeliveryMan(AssignOrdersToDeliveryManRequest request)
+        {
+            var command = request.Map<AssignOrdersToDeliveryManCommand>();
+            var result = await _mediator.Send(command);
+            return result;
+        }
+        [HttpPut("UpdateOrderTripStatus")]
+        public async Task<Result<bool>> UpdateOrderTripStatus(UpdateOrderStatusTripRequest request)
+        {
+            var command = request.Map<UpdateOrderStatusTripCommand>();
+            var result = await _mediator.Send(command);
             return result;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Account.Register.Commands;
 using FoodApp.Api.VerticalSlicing.Features.Account.Register.Orchestrator;
 
@@ -11,6 +12,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Account.Register
             CreateMap<RegisterRequest, RegisterCommand>();
             CreateMap<RegisterOrchestrator, RegisterCommand>();
             CreateMap<RegisterRequest, RegisterOrchestrator>();
+            CreateMap<RegisterCommand, User>();
         }
     }
 }

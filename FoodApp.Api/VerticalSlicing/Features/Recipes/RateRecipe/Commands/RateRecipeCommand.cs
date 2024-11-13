@@ -2,6 +2,7 @@
 using FoodApp.Api.VerticalSlicing.Data.Entities;
 using FoodApp.Api.VerticalSlicing.Features.Account;
 using FoodApp.Api.VerticalSlicing.Features.Orders;
+using FoodApp.Api.VerticalSlicing.Features.Recipes.RateRecipe.Queries;
 using FoodApp.Api.VerticalSlicing.Features.Recipes.ViewRecipe.Queries;
 using FoodApp.Api.VerticalSlicing.Features.Users.GetAllUsers;
 using MediatR;
@@ -33,6 +34,12 @@ namespace FoodApp.Api.VerticalSlicing.Features.Recipes.RateRecipe.Commands
                 return Result.Failure<UserResponse>(UserErrors.NoLoggedInUserFound);
             }
 
+            var hasRatedRecipe = await _mediator.Send(new CheckUserRecipeRatingQuery(int.Parse(userId), request.RecipeId), cancellationToken);
+
+            if (hasRatedRecipe)
+            {
+                return Result.Failure(RecipeErrors.RecipeAlreadyRated);
+            }
             var rating = request.Map<RecipeRating>();
             rating.UserId = int.Parse(userId);
             rating.RecipeId = recipeResult.Data.Id;

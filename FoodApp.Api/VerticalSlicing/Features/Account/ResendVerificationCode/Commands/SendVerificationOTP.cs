@@ -1,17 +1,14 @@
 ﻿using FoodApp.Api.VerticalSlicing.Common;
 using FoodApp.Api.VerticalSlicing.Data.Entities;
-using FoodApp.Api.VerticalSlicing.Features.Account.Login.Queries;
 using FoodApp.Api.VerticalSlicing.Features.Common;
 using MediatR;
 
 namespace FoodApp.Api.VerticalSlicing.Features.Account.ResendVerificationCode.Commands
 {
     public record SendVerificationOTP(string Email) : IRequest<Result<bool>>;
-
-    public class ResendVerificationOTPHandler : BaseRequestHandler<SendVerificationOTP, Result<bool>>
+    public class SendVerificationOTPHandler : BaseRequestHandler<SendVerificationOTP, Result<bool>>
     {
-        public ResendVerificationOTPHandler(RequestParameters requestParameters) : base(requestParameters) { }
-
+        public SendVerificationOTPHandler(RequestParameters requestParameters) : base(requestParameters) { }
         public async override Task<Result<bool>> Handle(SendVerificationOTP request, CancellationToken cancellationToken)
         {
             var userResult = await _mediator.Send(new GetUserByEmailQuery(request.Email));
@@ -24,7 +21,6 @@ namespace FoodApp.Api.VerticalSlicing.Features.Account.ResendVerificationCode.Co
             if (user.IsEmailVerified)
             {
                 return Result.Failure<bool>(UserErrors.EmailIsAlreadyVerified);
-
             }
             var otpCode = GenerateOTP();
             user.VerificationOTP = otpCode;

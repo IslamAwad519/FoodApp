@@ -12,12 +12,8 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands
 
     public class UpdateOrderStatusCommandHandler : BaseRequestHandler<UpdateOrderStatusCommand, Result<bool>>
     {
-        private readonly RabbitMQPublisherService _rabbitMQPublisherService;
 
-        public UpdateOrderStatusCommandHandler(RequestParameters requestParameters, RabbitMQPublisherService rabbitMQPublisherService) : base(requestParameters)
-        {
-            _rabbitMQPublisherService = rabbitMQPublisherService;
-        }
+        public UpdateOrderStatusCommandHandler(RequestParameters requestParameters) : base(requestParameters) { }
 
         public override async Task<Result<bool>> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
         {
@@ -40,7 +36,7 @@ namespace FoodApp.Api.VerticalSlicing.Features.Orders.UpdateOrderStatus.Commands
             { 
                 if (request.NewStatus != OrderStatus.InProgress &&
                     request.NewStatus != OrderStatus.Completed &&
-                    request.NewStatus != OrderStatus.Delivered)
+                    request.NewStatus != OrderStatus.Ready)
                 {
                     return Result.Failure<bool>(OrderErrors.InvalidStatusUpdate);
                 }

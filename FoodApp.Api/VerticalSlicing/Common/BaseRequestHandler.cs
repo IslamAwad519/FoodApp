@@ -1,4 +1,5 @@
-﻿using FoodApp.Api.VerticalSlicing.Data.Repository.Interface;
+﻿using FoodApp.Api.VerticalSlicing.Common.RabbitMQServices;
+using FoodApp.Api.VerticalSlicing.Data.Repository.Interface;
 using MediatR;
 
 namespace FoodApp.Api.VerticalSlicing.Common
@@ -9,6 +10,7 @@ namespace FoodApp.Api.VerticalSlicing.Common
         protected readonly UserState _userState;
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly EmailSenderHelper _emailSenderHelper;
+        protected readonly RabbitMQPublisherService _rabbitMQPublisherService;
 
         public BaseRequestHandler(RequestParameters requestParameters)
         {
@@ -16,6 +18,7 @@ namespace FoodApp.Api.VerticalSlicing.Common
             _userState = requestParameters.UserState;
             _unitOfWork = requestParameters.UnitOfWork;
             _emailSenderHelper = requestParameters.EmailSenderHelper;
+            _rabbitMQPublisherService = requestParameters.RabbitMQPublisherService;
         }
         public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
 

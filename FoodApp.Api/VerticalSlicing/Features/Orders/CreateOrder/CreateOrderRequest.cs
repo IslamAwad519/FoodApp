@@ -3,7 +3,7 @@
     public class CreateOrderRequest
     {
         public List<OrderItemViewModel> OrderItems { get; set; }
-        public AddressViewModel ShippingAddress { get; set; }
+        public AddressViewModel? ShippingAddress { get; set; }
     }
     public class AddressViewModel
     {
